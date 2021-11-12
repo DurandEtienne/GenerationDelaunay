@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {
 
-  ifstream fichier("/home/etienne/Ecole/Techniques de maillage/meshes/2D/bump.mesh", ios::in);  // on ouvre le fichier en lecture
+  ifstream fichier("bump.mesh", ios::in);  // on ouvre le fichier en lecture
   if(fichier)  // si l'ouverture a réussi
   {
     // instructions
