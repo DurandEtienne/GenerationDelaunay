@@ -142,4 +142,3 @@ bool inCircumscribedCircle(vector<double> point, int triangleIndex, vector<doubl
     // verify condition
     return (norm(CM)<= norm(v1C));
 }
-
