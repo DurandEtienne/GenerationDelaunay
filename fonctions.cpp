@@ -48,19 +48,19 @@ int getTriangle(vector<double> point, vector<double> triangles, vector<double> e
     {
         vector<double> v1(2), v2(2), v3(2);
         // first vertice
-        v1[0] = vertices[edges[triangles[i] * 3] * 3];
-        v1[1] = vertices[edges[triangles[i] * 3] * 3 + 1];
+        v1[0] = vertices[(triangles[i]-1) * 3];
+        v1[1] = vertices[(triangles[i]-1) * 3 + 1];
         // second vertice
-        v2[0] = vertices[edges[triangles[i] * 3 + 1] * 3];
-        v2[1] = vertices[edges[triangles[i] * 3 + 1] * 3 + 1];
+        v2[0] = vertices[(triangles[i+1]-1) * 3];
+        v2[1] = vertices[(triangles[i+1]-1) * 3 + 1];
         // third vertice
-        v3[0] = vertices[edges[triangles[i + 1] * 3] * 3];
-        v3[1] = vertices[edges[triangles[i + 1] * 3] * 3 + 1];
-        if ((v3[0] == v1[0] && v3[1] == v1[1]) || (v3[0]== v2[0] &&v3[1] == v2[1]))
-        {
-            v3[0] = vertices[edges[triangles[i + 1] * 3 + 1] * 3];
-            v3[1] = vertices[edges[triangles[i + 1] * 3 + 1] * 3 + 1];
-        }
+        v3[0] = vertices[(triangles[i+2]-1) * 3];
+        v3[1] = vertices[(triangles[i+2]-1) * 3 + 1];
+        // if ((v3[0] == v1[0] && v3[1] == v1[1]) || (v3[0] == v2[0] && v3[1] == v2[1]))
+        // {
+        //     v3[0] = vertices[edges[triangles[i + 1] * 3 + 1] * 3];
+        //     v3[1] = vertices[edges[triangles[i + 1] * 3 + 1] * 3 + 1];
+        // }
         vector<double> v1M(2), v1v2(2), v1v3(2);
         v1M[0] = point[0] - v1[0];
         v1M[1] = point[1] - v1[1];
@@ -68,18 +68,17 @@ int getTriangle(vector<double> point, vector<double> triangles, vector<double> e
         v1v2[1] = v2[1] - v1[1];
         v1v3[0] = v3[0] - v1[0];
         v1v3[1] = v3[1] - v1[1];
-        double lambda2 = scalar(v1M, rotate(v1v3, 90.)) / scalar(v1v2, rotate(v1v3,90.));
-        double lambda3 = scalar(v1M, rotate(v1v2, 90.)) / scalar(v1v3, rotate(v1v2,90.));
+        double lambda2 = scalar(v1M, rotate(v1v3, 90.)) / scalar(v1v2, rotate(v1v3, 90.));
+        double lambda3 = scalar(v1M, rotate(v1v2, 90.)) / scalar(v1v3, rotate(v1v2, 90.));
         // checking condition
         if (lambda2 >= 0. && lambda3 >= 0. && lambda2 + lambda3 <= 1.)
         {
             if (lambda2 == 0. || lambda3 == 0. || lambda2 + lambda3 == 1.)
             {
                 cout << "You choosed a point in an edge !!! " << endl;
-                ;
             }
 
-            return i / 4;
+            return i / 4+1;
         }
     }
 }
@@ -88,7 +87,8 @@ vector<int> getTriangleNeighbors(int triangleIndex, vector<double> triangles)
     vector<int> res;
     for (int i = 0; i < triangles.size(); i += 4)
     {
-        if (haveOneCommonEdge(vector <double> (triangles.begin()+triangleIndex,triangles.begin()+triangleIndex+2),vector <double> (triangles.begin()+i,triangles.begin()+i+2)));//[triangleIndex:(triangleIndex + 3)], triangles [i:i + 3]))
+        if (haveOneCommonEdge(vector<double>(triangles.begin() + triangleIndex, triangles.begin() + triangleIndex + 2), vector<double>(triangles.begin() + i, triangles.begin() + i + 2)))
+            ; //[triangleIndex:(triangleIndex + 3)], triangles [i:i + 3]))
         {
             res.push_back(i / 4);
         }
@@ -109,13 +109,13 @@ bool inCircumscribedCircle(vector<double> point, int triangleIndex, vector<doubl
     // third vertice
     v3[0] = vertices[edges[triangles[i + 1] * 3] * 3];
     v3[1] = vertices[edges[triangles[i + 1] * 3] * 3 + 1];
-    if ((v3[0] ==v1[0] && v3[1] == v1[1]) || (v3[0] == v2[0] &&v3[1] == v2[1]))
+    if ((v3[0] == v1[0] && v3[1] == v1[1]) || (v3[0] == v2[0] && v3[1] == v2[1]))
     {
         v3[0] = vertices[edges[triangles[i + 1] * 3 + 1] * 3];
         v3[1] = vertices[edges[triangles[i + 1] * 3 + 1] * 3 + 1];
     }
     // Creating edges vectors
-    vector<double> v1M, v1v2, v1v3;
+    vector<double> v1M(2), v1v2(2), v1v3(2);
     v1M[0] = point[0] - v1[0];
     v1M[1] = point[1] - v1[1];
     v1v2[0] = v2[0] - v1[0];
@@ -137,8 +137,8 @@ bool inCircumscribedCircle(vector<double> point, int triangleIndex, vector<doubl
     // Now the position of M relatively to v1 is known let's use it
     // positon relatively to each other
     vector<double> CM(2);
-    CM[0]=v1M[0]-v1C[0] ;
-    CM[0]=v1M[0]-v1C[0] ;
+    CM[0] = v1M[0] - v1C[0];
+    CM[0] = v1M[0] - v1C[0];
     // verify condition
-    return (norm(CM)<= norm(v1C));
+    return (norm(CM) <= norm(v1C));
 }
