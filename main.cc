@@ -21,7 +21,7 @@ int main()
   Aretes = Res[1];
   Triangles = Res[2];
 
-
+  
 
   return 0;
 }
