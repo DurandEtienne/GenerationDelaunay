@@ -14,7 +14,7 @@ int main()
   vector<double> Aretes;
   vector<double> Triangles;
 
-  string nomdufichier = "bump.mesh";
+  string nomdufichier = "carre_simple.mesh";
   cout << "le nom du fichier est  : " << nomdufichier << endl;
   Res = lecture(nomdufichier);
   Points = Res[0];
