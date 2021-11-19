@@ -4,6 +4,7 @@
 #include<string>
 
 #include "lecture.h"
+#include "fonctions.h"
 using namespace std;
 
 int main()
@@ -20,7 +21,7 @@ int main()
   Points = Res[0];
   Aretes = Res[1];
   Triangles = Res[2];
-
+  
 
 
   return 0;
