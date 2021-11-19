@@ -61,7 +61,7 @@ int getTriangle(vector<double> point, vector<double> triangles, vector<double> e
             v3[0] = vertices[edges[triangles[i + 1] * 3 + 1] * 3];
             v3[1] = vertices[edges[triangles[i + 1] * 3 + 1] * 3 + 1];
         }
-        vector<double> v1M, v1v2, v1v3;
+        vector<double> v1M(2), v1v2(2), v1v3(2);
         v1M[0] = point[0] - v1[0];
         v1M[1] = point[1] - v1[1];
         v1v2[0] = v2[0] - v1[0];
