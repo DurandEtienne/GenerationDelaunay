@@ -101,19 +101,19 @@ bool inCircumscribedCircle(vector<double> point, int triangleIndex, vector<doubl
     int i = triangleIndex * 4;
     vector<double> v1(2), v2(2), v3(2);
     // first vertice
-    v1[0] = vertices[edges[triangles[i] * 3] * 3];
-    v1[1] = vertices[edges[triangles[i] * 3] * 3 + 1];
+    v1[0] = vertices[(triangles[i]-1) * 3];
+    v1[1] = vertices[(triangles[i]-1) * 3 + 1];
     // second vertice
-    v2[0] = vertices[edges[triangles[i] * 3 + 1] * 3];
-    v2[1] = vertices[edges[triangles[i] * 3 + 1] * 3 + 1];
+    v2[0] = vertices[(triangles[i+1]-1) * 3];
+    v2[1] = vertices[(triangles[i+1]-1) * 3 + 1];
     // third vertice
-    v3[0] = vertices[edges[triangles[i + 1] * 3] * 3];
-    v3[1] = vertices[edges[triangles[i + 1] * 3] * 3 + 1];
-    if ((v3[0] == v1[0] && v3[1] == v1[1]) || (v3[0] == v2[0] && v3[1] == v2[1]))
-    {
-        v3[0] = vertices[edges[triangles[i + 1] * 3 + 1] * 3];
-        v3[1] = vertices[edges[triangles[i + 1] * 3 + 1] * 3 + 1];
-    }
+    v3[0] = vertices[(triangles[i+2]-1) * 3];
+    v3[1] = vertices[(triangles[i+2]-1) * 3 + 1];
+    // if ((v3[0] == v1[0] && v3[1] == v1[1]) || (v3[0] == v2[0] && v3[1] == v2[1]))
+    // {
+    //     v3[0] = vertices[edges[triangles[i + 1] * 3 + 1] * 3];
+    //     v3[1] = vertices[edges[triangles[i + 1] * 3 + 1] * 3 + 1];
+    // }
     // Creating edges vectors
     vector<double> v1M(2), v1v2(2), v1v3(2);
     v1M[0] = point[0] - v1[0];
@@ -141,4 +141,20 @@ bool inCircumscribedCircle(vector<double> point, int triangleIndex, vector<doubl
     CM[0] = v1M[0] - v1C[0];
     // verify condition
     return (norm(CM) <= norm(v1C));
+}
+
+vector<int> getTriangleCavity(vector<double> point, vector<double> triangles, vector<double> edges, vector<double> vertices)
+{
+  int nb_triangles = triangles.size()/4;
+  bool cavity;
+  vector<int> cavityIndex;
+  for (int i = 0; i < triangles.size(); i ++)
+  {
+    cavity = inCircumscribedCircle(point,i,triangles,edges,vertices);
+    if (cavity == true)
+    {
+      cavityIndex.push_back(i);
+    }
+  }
+  return cavityIndex;
 }

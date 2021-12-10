@@ -23,9 +23,17 @@ int main()
   Triangles = Res[2];
 
   vector <double> point(2);
-  point[0]=1./4.;
-  point[1]=3.5/4.;
-  printf("le point appartient au triangle  %d",getTriangle(point,Triangles,Aretes,Points));
-  
+  point[0]=0.;
+  point[1]=0.;
+  printf("le point appartient au triangle  %d ",getTriangle(point,Triangles,Aretes,Points));
+
+  vector<int> cavityIndex;
+  cavityIndex = getTriangleCavity(point,Triangles,Aretes,Points);
+  int size = cavityIndex.size();
+  cout << "les cavités du point sont " <<endl;
+  for (int i=0; i<size; i++)
+  {
+    cout << cavityIndex[i] << endl;
+  }
   return 0;
 }
