@@ -1,5 +1,16 @@
-#include "fonctions.h"
+#include <iostream>
 #include <math.h>
+#include <ctime>
+#include <fstream>
+#include <string>
+#include<vector>
+
+#include "fonctions.h"
+
+
+using namespace std;
+
+
 vector<double> rotate(vector<double> v, double theta)
 {
     vector<double> res(2);
@@ -98,7 +109,7 @@ vector<int> getTriangleNeighbors(int triangleIndex, vector<double> triangles)
 bool inCircumscribedCircle(vector<double> point, int triangleIndex, vector<double> triangles, vector<double> edges, vector<double> vertices)
 {
     // Retrieving triangle vertices
-    int i = triangleIndex * 4;
+    int i = (triangleIndex-1) * 4;
     vector<double> v1(2), v2(2), v3(2);
     // first vertice
     v1[0] = vertices[(triangles[i]-1) * 3];
@@ -138,7 +149,7 @@ bool inCircumscribedCircle(vector<double> point, int triangleIndex, vector<doubl
     // positon relatively to each other
     vector<double> CM(2);
     CM[0] = v1M[0] - v1C[0];
-    CM[0] = v1M[0] - v1C[0];
+    CM[1] = v1M[1] - v1C[1];
     // verify condition
     return (norm(CM) <= norm(v1C));
 }
@@ -148,7 +159,7 @@ vector<int> getTriangleCavity(vector<double> point, vector<double> triangles, ve
   int nb_triangles = triangles.size()/4;
   bool cavity;
   vector<int> cavityIndex;
-  for (int i = 0; i < triangles.size(); i ++)
+  for (int i = 1; i <= nb_triangles; i ++)
   {
     cavity = inCircumscribedCircle(point,i,triangles,edges,vertices);
     if (cavity == true)

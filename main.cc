@@ -15,7 +15,7 @@ int main()
   vector<double> Aretes;
   vector<double> Triangles;
 
-  string nomdufichier = "carre_simple.mesh";
+  string nomdufichier = "carre_simple2.mesh";
   cout << "le nom du fichier est  : " << nomdufichier << endl;
   Res = lecture(nomdufichier);
   Points = Res[0];
@@ -23,17 +23,23 @@ int main()
   Triangles = Res[2];
 
   vector <double> point(2);
-  point[0]=0.;
-  point[1]=0.;
+  point[0]=1.99;
+  point[1]=1.99;
   printf("le point appartient au triangle  %d ",getTriangle(point,Triangles,Aretes,Points));
 
-  vector<int> cavityIndex;
-  cavityIndex = getTriangleCavity(point,Triangles,Aretes,Points);
-  int size = cavityIndex.size();
-  cout << "les cavités du point sont " <<endl;
-  for (int i=0; i<size; i++)
-  {
-    cout << cavityIndex[i] << endl;
-  }
+
+   cout << "cercle " << inCircumscribedCircle(point,7,Triangles,Aretes,Points) << endl;
+
+
+  // vector<int> cavityIndex;
+  // cavityIndex = getTriangleCavity(point,Triangles,Aretes,Points);
+  // int size = cavityIndex.size();
+  // cout << "les cavités du point sont " <<endl;
+  // for (int i=0; i<size; i++)
+  // {
+  //   cout << cavityIndex[i] << endl;
+  // }
+
+
   return 0;
 }

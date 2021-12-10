@@ -5,14 +5,17 @@
 #include <string>
 #include<vector>
 
-using namespace std;
 
-vector<double> rotate (vector<double> V , double theta);
+std::vector<double> rotate (std::vector<double> V , double theta);
 
-double scalar (vector<double> v1 , vector<double> v2);
+double scalar (std::vector<double> v1 , std::vector<double> v2);
 
-int getTriangle(vector<double> point,vector<double> triangles ,vector<double> edges ,vector<double> vertices);
+int getTriangle(std::vector<double> point,std::vector<double> triangles ,std::vector<double> edges ,std::vector<double> vertices);
 
-vector<int> getTriangleNeighbors(vector<double> triangleIndex,vector<double> triangles);
+std::vector<int> getTriangleNeighbors(std::vector<double> triangleIndex,std::vector<double> triangles);
 
-vector<int> getTriangleCavity(vector<double> point, vector<double> triangles, vector<double> edges, vector<double> vertices);
+std::vector<int> getTriangleCavity(std::vector<double> point, std::vector<double> triangles, std::vector<double> edges, std::vector<double> vertices);
+
+bool inCircumscribedCircle(std::vector<double> point, int triangleIndex, std::vector<double> triangles, std::vector<double> edges, std::vector<double> vertices);
+
+bool haveOneCommonEdge(std::vector<double> triangle1, std::vector<double> triangle2);
