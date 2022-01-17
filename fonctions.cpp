@@ -328,8 +328,60 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
   // Détermination des minimums et maximums en x et y
   int nbOfVertices = vertices.size() / 3;
   int nbOfEdges = edges.size() / 3;
-  for (int p = 0; nbOfVertices; p++)
+  double x_min(0.), x_max(0.), y_min(0.), y_max(0.), label(vertices[2]), label2(edges[2]);
+
+  //Parcours de la liste des points pour déterminer les min et max
+  for (int p = 0; p < nbOfVertices; p++)
   {
-    
+    x = vertices[3*p];
+    y = vertices[3*p+1];
+    if (x< x_min)
+    {
+      x_min = x;
+    }
+    if (x> x_max)
+    {
+      x_max = x;
+    }
+    if (y< y_min)
+    {
+      y_min = y;
+    }
+    if (y> y_max)
+    {
+      y_max = y;
+    }
   }
+
+  //Rajout des 4 points de la boite à la fin du vecteur contenant les points
+  double moyenne_x = abs(x_max-x_min)/2;
+  double moyenne_y = abs(y_max-y_min)/2;
+  vertices.push_back(x_min-moyenne_x);
+  vertices.push_back(y_min-moyenne_y);
+  vertices.push_back(label);
+  vertices.push_back(x_max+moyenne_x);
+  vertices.push_back(y_min-moyenne_y);
+  vertices.push_back(label);
+  vertices.push_back(x_min-moyenne_x);
+  vertices.push_back(y_max+moyenne_y);
+  vertices.push_back(label);
+  vertices.push_back(x_max+moyenne_x);
+  vertices.push_back(y_max+moyenne_y);
+  vertices.push_back(label);
+
+
+  //Rajout des Aretes de la boite à la fin du vecteur contenant les arêtes
+  int n = nbOfVertices;
+  edges.push_back(q);
+  edges.push_back(q+1);
+  edges.push_back(label2);
+  edges.push_back(q+1);
+  edges.push_back(q+2);
+  edges.push_back(label2);
+  edges.push_back(q+2);
+  edges.push_back(q+3);
+  edges.push_back(label2);
+  edges.push_back(q+3);
+  edges.push_back(q);
+  edges.push_back(label2);
 }
