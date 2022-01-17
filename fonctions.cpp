@@ -20,7 +20,7 @@ vector<double> rotate(vector<double> v, double theta)
     res[1] = sin(theta) * v[0] + cos(theta) * v[1];
     return res;
 }
-bool haveOneCommonEdge(vector<double> triangle1, vector<double> triangle2)
+double haveOneCommonEdge(vector<double> triangle1, vector<double> triangle2)
 {
     for (int i = 0; i < 3; i++)
     {
@@ -32,7 +32,7 @@ bool haveOneCommonEdge(vector<double> triangle1, vector<double> triangle2)
             }
         }
     }
-    return NULL;
+    return -1;
 }
 
 double scalar(vector<double> v1, vector<double> v2)
@@ -64,7 +64,7 @@ int getIndexOfElementInArray(vector<double> v, double element)
             return i;
         }
     }
-    return NULL;
+    return -1;
 }
 void fixEdgesindexing(vector<double> &triangles, double ind)
 {
@@ -86,7 +86,7 @@ int checkIfAnEdgeAlreadyExist(vector<double> edges, vector<double> edge)
             return (i / 3) + 1;
         }
     }
-    return NULL;
+    return -1;
 }
 int getTriangle(vector<double> point, vector<double> triangles, vector<double> edges, vector<double> vertices)
 {
@@ -133,7 +133,7 @@ vector<int> getTriangleNeighbors(int triangleIndex, vector<double> triangles)
     vector<int> res;
     for (int i = 0; i < triangles.size(); i += 4)
     {
-        if (haveOneCommonEdge(vector<double>(triangles.begin() + triangleIndex, triangles.begin() + triangleIndex + 2), vector<double>(triangles.begin() + i, triangles.begin() + i + 2)))
+        if (haveOneCommonEdge(vector<double>(triangles.begin() + triangleIndex, triangles.begin() + triangleIndex + 2), vector<double>(triangles.begin() + i, triangles.begin() + i + 2))!=-1)
             ; //[triangleIndex:(triangleIndex + 3)], triangles [i:i + 3]))
         {
             res.push_back(i / 4);
@@ -224,19 +224,19 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         {
             triangle1[r] = triangles[ibegin + r];
             // adding boundry edges
-            if (!getIndexOfElementInArray(boundryEdgesToConnect, triangle1[r]))
+            if (getIndexOfElementInArray(boundryEdgesToConnect, triangle1[r])==-1)
             {
                 boundryEdgesToConnect.push_back(triangle1[r]);
             }
             // getting vertices of cavity boundary
-            int ibeg = (int)(3 * triangle1[r]);
+            int ibeg = (int)(3 * (triangle1[r]-1));
             // add first boundry vertice if it does not exist already
-            if (!getIndexOfElementInArray(pointsToConnect, edges[ibeg]))
+            if (getIndexOfElementInArray(pointsToConnect, edges[ibeg])==-1)
             {
                 pointsToConnect.push_back(edges[ibeg]);
             }
             // add second boundry vertice if it does not exist already
-            if (!getIndexOfElementInArray(pointsToConnect, edges[ibeg + 1]))
+            if (getIndexOfElementInArray(pointsToConnect, edges[ibeg + 1])==-1)
             {
                 pointsToConnect.push_back(edges[ibeg + 1]);
             }
@@ -251,13 +251,13 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
                 triangle2[r] = triangles[jbegin + r];
             }
             // checking if they have a common edge and erase it in case
-            if (haveOneCommonEdge(triangle1, triangle2))
+            if (haveOneCommonEdge(triangle1, triangle2)!=-1)
             {
                 // getting the beginnig position of the common edge
                 double communBndIndex = haveOneCommonEdge(triangle1, triangle2);
                 edgesToDelete.push_back(communBndIndex);
                 // deleting commun edges from the vector of cavity boundry edges
-                if (getIndexOfElementInArray(boundryEdgesToConnect, communBndIndex))
+                if (getIndexOfElementInArray(boundryEdgesToConnect, communBndIndex)!=-1)
                 {
                     boundryEdgesToConnect.erase(boundryEdgesToConnect.begin() + getIndexOfElementInArray(boundryEdgesToConnect, communBndIndex));
                 }
@@ -265,10 +265,12 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         }
     }
     // erasing triangles after using them
+    int h=0;
     for (int i = 0; i < n; i++)
     {
-        ibegin = 4 * (trianglesInCavity[i] - 1);
+        ibegin = 4 * (trianglesInCavity[i] - 1)-h*4;
         triangles.erase(triangles.begin() + ibegin, triangles.begin() + ibegin + 4);
+        h++;
         nbOfTriangles -= 1;
     }
     // adding the new point
@@ -281,7 +283,7 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
     for (int q = 1; q < boundryEdgesToConnect.size() + 1; q++)
     {
         edg1 = (int)boundryEdgesToConnect[q];
-        if (!checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3], (double) nbOfVertices}))
+        if (checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3], (double) nbOfVertices})==-1)
         {
             edges.push_back(edges[(edg1 - 1) * 3]);
             edges.push_back(nbOfVertices);
@@ -293,7 +295,7 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         {
             edg2=checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3],(double) nbOfVertices});
         }
-        if (!checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3+1], (double)nbOfVertices}))
+        if (checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3+1], (double)nbOfVertices})==-1)
         {
             edges.push_back(edges[(edg1 - 1) * 3+1]);
             edges.push_back(nbOfVertices);
@@ -314,8 +316,9 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
     // finally erase edges
     for (int p = 0; p < edgesToDelete.size(); p++)
     {
-        ibegin = (int)(edgesToDelete[p] - 1) * 3;
+        ibegin = (int)(edgesToDelete[p] - 1) * 3-h*3;
         edges.erase(edges.begin() + ibegin, edges.begin() + ibegin + 3);
         fixEdgesindexing(triangles, edgesToDelete[p]);
+        fixEdgesindexing(edgesToDelete,edgesToDelete[p]);
     }
 }

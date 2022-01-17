@@ -125,3 +125,32 @@ vector<vector<double>> lecture(string nomdufichier)
     Res = {Points, Aretes, Triangles};
     return Res;
 }
+void write (vector<double> triangles , vector<double> edges ,vector<double> vertices)
+{
+  ofstream newmesh;
+  newmesh.open("modifiedMesh");
+  newmesh << "MeshVersionFormatted 1\n\nDimension 2\n\n"<< endl;
+  bool finished=true;
+  newmesh<<"Vertices\n"<<endl;
+  newmesh<<vertices.size()/3<< endl;
+  for (int i = 0; i < vertices.size(); i+=3)
+  {
+    newmesh<<vertices[i]<<" " <<vertices[i+1]<<" " <<vertices[i+2]<<endl;
+  }
+  newmesh<<"\n";
+  newmesh<<"Edges"<<endl;
+  newmesh<<edges.size()/3<< endl;
+  for (int i = 0; i < edges.size(); i+=3)
+  {
+    newmesh<<edges[i]<<" " <<edges[i+1]<<" " <<edges[i+2]<<endl;
+  }
+  newmesh<<"\n";
+  newmesh<<"Triangles"<<endl;
+  newmesh<<triangles.size()/4<< endl;
+  for (int i = 0; i < triangles.size(); i+=4)
+  {
+    newmesh<<triangles[i]<<" " <<triangles[i+1]<<" " <<triangles[i+2]<<" " <<triangles[i+3]<<endl;
+  }
+  newmesh<<"\n";
+  newmesh<<"End";
+}
