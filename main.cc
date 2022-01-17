@@ -30,7 +30,7 @@ int main()
 
    cout << "cercle " << inCircumscribedCircle(point,7,Triangles,Aretes,Points) << endl;
 
-
+   deleteEdgesOnCavityAndReconnect(point, Triangles, Aretes, Points);
   // vector<int> cavityIndex;
   // cavityIndex = getTriangleCavity(point,Triangles,Aretes,Points);
   // int size = cavityIndex.size();
