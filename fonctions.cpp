@@ -371,10 +371,7 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
 
 
   //Rajout des Aretes de la boite à la fin du vecteur contenant les arêtes
-  int n = nbOfVertices;
-  edges.push_back(q);
-  edges.push_back(q+1);
-  edges.push_back(label2);
+  int q = nbOfVertices; //Sans compter les coins de la boîte
   edges.push_back(q+1);
   edges.push_back(q+2);
   edges.push_back(label2);
@@ -382,6 +379,59 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
   edges.push_back(q+3);
   edges.push_back(label2);
   edges.push_back(q+3);
-  edges.push_back(q);
+  edges.push_back(q+4);
+  edges.push_back(label2);
+  edges.push_back(q+4);
+  edges.push_back(q+1);
+  edges.push_back(label2);
+}
+
+void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
+{
+  // int c = vertices.size() -12;
+  // vector d(4);
+  // vector premier_point(2), bas_gauche(2), bas_droite(2), haut_gauche(2), haut_droite(2);
+  // int min(1);
+  // premier_point[0] = vertices[0];
+  // premier_point[1] = vertices[1];
+  // bas_gauche[0] = vertices[c];
+  // bas_gauche[1] = vertices[c+1];
+  // bas_gauche[0] = vertices[c+3];
+  // bas_gauche[1] = vertices[c+4];
+  // bas_gauche[0] = vertices[c+6];
+  // bas_gauche[1] = vertices[c+7];
+  // bas_gauche[0] = vertices[c+9];
+  // bas_gauche[1] = vertices[c+10];
+  // d[1] = distance(bas_gauche,premier_point);
+  // d[2] = distance(bas_droite, premier_point);
+  // d[3]= distance(haut_gauche, premier_point);
+  // d[4] = distance(haut_droite, premier_point);
+  //
+  // for (int i=1;i<4,i++)
+  // {
+  //   if (d[i] < min)
+  //   {
+  //     min = i;
+  //   }
+  // }
+  double label2(edges[2]);
+  // Identification du premier point géométrique
+  vector premier_point(2);
+  premier_point[0] = vertices[0];
+  premier_point[1] = vertices[1];
+
+  //Liaison de ce premier point avec les 4 coins de la boîte
+  int q = nbOfVertices - 4; //on enlève les 4 coins de la boîte
+  edges.push_back(1);
+  edges.push_back(q+1);
+  edges.push_back(label2);
+  edges.push_back(1);
+  edges.push_back(q+2);
+  edges.push_back(label2);
+  edges.push_back(1);
+  edges.push_back(q+3);
+  edges.push_back(label2);
+  edges.push_back(1);
+  edges.push_back(q+4);
   edges.push_back(label2);
 }
