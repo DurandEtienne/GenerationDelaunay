@@ -71,7 +71,7 @@ void fixEdgesindexing(vector<double> &triangles, double ind)
     for (int i = 0; i < triangles.size(); i++)
     {
 
-        if (triangles[i] % 4 != 3 && triangles[i] > id)
+        if (((int)triangles[i]) % 4 != 3 && triangles[i] > ind)
         {
             triangles[i] -= 1;
         }
@@ -276,12 +276,12 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
     vertices.push_back(point[1]);
     vertices.push_back(0);
     nbOfVertices++;
-    // making new edges and triangles
+    // Making new edges and triangles
     int edg1, edg2, edg3;
     for (int q = 1; q < boundryEdgesToConnect.size() + 1; q++)
     {
         edg1 = (int)boundryEdgesToConnect[q];
-        if (!checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3], nbOfVertices}))
+        if (!checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3], (double) nbOfVertices}))
         {
             edges.push_back(edges[(edg1 - 1) * 3]);
             edges.push_back(nbOfVertices);
@@ -291,9 +291,9 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         }
         else 
         {
-            edg2=checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3], nbOfVertices})
+            edg2=checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3],(double) nbOfVertices});
         }
-        if (!checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3+1], nbOfVertices}))
+        if (!checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3+1], (double)nbOfVertices}))
         {
             edges.push_back(edges[(edg1 - 1) * 3+1]);
             edges.push_back(nbOfVertices);
@@ -303,7 +303,7 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         }
         else 
         {
-            edg3=checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3], nbOfVertices})
+            edg3=checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3], (double) nbOfVertices});
         }
         triangles.push_back(edg1);
         triangles.push_back(edg2);
