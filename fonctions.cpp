@@ -289,7 +289,7 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
             nbOfEdges++;
             edg2 = nbOfEdges;
         }
-        else 
+        else
         {
             edg2=checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3], nbOfVertices})
         }
@@ -301,7 +301,7 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
             nbOfEdges++;
             edg3 = nbOfEdges;
         }
-        else 
+        else
         {
             edg3=checkIfAnEdgeAlreadyExist(edges, {edges[(edg1 - 1) * 3], nbOfVertices})
         }
@@ -318,4 +318,18 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         edges.erase(edges.begin() + ibegin, edges.begin() + ibegin + 3);
         fixEdgesindexing(triangles, edgesToDelete[p]);
     }
+}
+
+
+
+
+void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
+{
+  // Détermination des minimums et maximums en x et y
+  int nbOfVertices = vertices.size() / 3;
+  int nbOfEdges = edges.size() / 3;
+  for (int p = 0; nbOfVertices; p++)
+  {
+    
+  }
 }
