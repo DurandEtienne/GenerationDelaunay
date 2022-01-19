@@ -23,8 +23,8 @@ int main()
   Triangles = Res[2];
 
   vector <double> point(2);
-  point[0]=1.99;
-  point[1]=1.99;
+  point[0]=1.75;
+  point[1]=0.42;
   printf("le point appartient au triangle  %d ",getTriangle(point,Triangles,Aretes,Points));
 
 
