@@ -481,19 +481,16 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
   vertices.push_back(x_max+moyenne_x);
   vertices.push_back(y_min-moyenne_y);
   vertices.push_back(label);
-  vertices.push_back(x_min-moyenne_x);
+  vertices.push_back(x_max+moyenne_x);
   vertices.push_back(y_max+moyenne_y);
   vertices.push_back(label);
-  vertices.push_back(x_max+moyenne_x);
+  vertices.push_back(x_min-moyenne_x);
   vertices.push_back(y_max+moyenne_y);
   vertices.push_back(label);
 
 
   //Rajout des Aretes de la boite à la fin du vecteur contenant les arêtes
   int q = nbOfVertices;
-  edges.push_back(q);
-  edges.push_back(q+1);
-  edges.push_back(label2);
   edges.push_back(q+1);
   edges.push_back(q+2);
   edges.push_back(label2);
@@ -501,7 +498,10 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
   edges.push_back(q+3);
   edges.push_back(label2);
   edges.push_back(q+3);
-  edges.push_back(q);
+  edges.push_back(q+4);
+  edges.push_back(label2);
+  edges.push_back(q+4);
+  edges.push_back(q+1);
   edges.push_back(label2);
 }
 
@@ -535,8 +535,9 @@ void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vecto
   // }
 
   int nbOfVertices = vertices.size() / 3;
-  double label2;
+  double label2,label3;
   label2 = edges[2];
+  label3 = triangles[3];
   // Identification du premier point géométrique
   vector<double> premier_point(2);
   premier_point[0] = vertices[0];
@@ -556,4 +557,23 @@ void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vecto
   edges.push_back(1);
   edges.push_back(q+4);
   edges.push_back(label2);
+
+
+  triangles.push_back(1);
+  triangles.push_back(q+1);
+  triangles.push_back(q+2);
+  triangles.push_back(label3);
+  triangles.push_back(1);
+  triangles.push_back(q+2);
+  triangles.push_back(q+3);
+  triangles.push_back(label3);
+  triangles.push_back(1);
+  triangles.push_back(q+3);
+  triangles.push_back(q+4);
+  triangles.push_back(label3);
+  triangles.push_back(1);
+  triangles.push_back(q+4);
+  triangles.push_back(q+1);
+  triangles.push_back(label3);
+
 }
