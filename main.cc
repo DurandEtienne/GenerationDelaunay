@@ -23,14 +23,16 @@ int main()
   Triangles = Res[2];
 
   vector <double> point(2);
-  point[0]=1.75;
-  point[1]=0.42;
+  point[0]=0.3;
+  point[1]=1.67;
   printf("le point appartient au triangle  %d ",getTriangle(point,Triangles,Aretes,Points));
 
 
    cout << "cercle " << inCircumscribedCircle(point,7,Triangles,Aretes,Points) << endl;
 
    deleteEdgesOnCavityAndReconnect(point, Triangles, Aretes, Points);
+   buildBoiteEnglobante(Aretes, Points);
+   InitializeMeshBoite(Triangles, Aretes, Points);
    write (Triangles, Aretes, Points);
   // vector<int> cavityIndex;
   // cavityIndex = getTriangleCavity(point,Triangles,Aretes,Points);

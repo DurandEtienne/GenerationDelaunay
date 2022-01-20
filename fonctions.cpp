@@ -435,3 +435,125 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         }
     }
 }
+
+void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
+{
+  // Détermination des minimums et maximums en x et y
+  int nbOfVertices = vertices.size() / 3;
+  int nbOfEdges = edges.size() / 3;
+
+  // double x,y,x_min,x_max,y_min,y_max;
+  // double label(0.);
+  // double label2(1.);
+  //for (int p = 0; nbOfVertices; p++)
+  double x, y, x_min(0.), x_max(0.), y_min(0.), y_max(0.), label(vertices[2]), label2(edges[2]);
+
+  //Parcours de la liste des points pour déterminer les min et max
+  for (int p = 0; p < nbOfVertices; p++)
+  {
+
+    x = vertices[3*p];
+    y = vertices[3*p+1];
+    if (x< x_min)
+    {
+      x_min = x;
+    }
+    if (x> x_max)
+    {
+      x_max = x;
+    }
+    if (y< y_min)
+    {
+      y_min = y;
+    }
+    if (y> y_max)
+    {
+      y_max = y;
+    }
+  }
+
+  //Rajout des 4 points de la boite à la fin du vecteur contenant les points
+  double moyenne_x = abs(x_max-x_min)/2;
+  double moyenne_y = abs(y_max-y_min)/2;
+  vertices.push_back(x_min-moyenne_x);
+  vertices.push_back(y_min-moyenne_y);
+  vertices.push_back(label);
+  vertices.push_back(x_max+moyenne_x);
+  vertices.push_back(y_min-moyenne_y);
+  vertices.push_back(label);
+  vertices.push_back(x_min-moyenne_x);
+  vertices.push_back(y_max+moyenne_y);
+  vertices.push_back(label);
+  vertices.push_back(x_max+moyenne_x);
+  vertices.push_back(y_max+moyenne_y);
+  vertices.push_back(label);
+
+
+  //Rajout des Aretes de la boite à la fin du vecteur contenant les arêtes
+  int q = nbOfVertices;
+  edges.push_back(q);
+  edges.push_back(q+1);
+  edges.push_back(label2);
+  edges.push_back(q+1);
+  edges.push_back(q+2);
+  edges.push_back(label2);
+  edges.push_back(q+2);
+  edges.push_back(q+3);
+  edges.push_back(label2);
+  edges.push_back(q+3);
+  edges.push_back(q);
+  edges.push_back(label2);
+}
+
+void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
+{
+  // int c = vertices.size() -12;
+  // vector d(4);
+  // vector premier_point(2), bas_gauche(2), bas_droite(2), haut_gauche(2), haut_droite(2);
+  // int min(1);
+  // premier_point[0] = vertices[0];
+  // premier_point[1] = vertices[1];
+  // bas_gauche[0] = vertices[c];
+  // bas_gauche[1] = vertices[c+1];
+  // bas_gauche[0] = vertices[c+3];
+  // bas_gauche[1] = vertices[c+4];
+  // bas_gauche[0] = vertices[c+6];
+  // bas_gauche[1] = vertices[c+7];
+  // bas_gauche[0] = vertices[c+9];
+  // bas_gauche[1] = vertices[c+10];
+  // d[1] = distance(bas_gauche,premier_point);
+  // d[2] = distance(bas_droite, premier_point);
+  // d[3]= distance(haut_gauche, premier_point);
+  // d[4] = distance(haut_droite, premier_point);
+  //
+  // for (int i=1;i<4,i++)
+  // {
+  //   if (d[i] < min)
+  //   {
+  //     min = i;
+  //   }
+  // }
+
+  int nbOfVertices = vertices.size() / 3;
+  double label2;
+  label2 = edges[2];
+  // Identification du premier point géométrique
+  vector<double> premier_point(2);
+  premier_point[0] = vertices[0];
+  premier_point[1] = vertices[1];
+
+  //Liaison de ce premier point avec les 4 coins de la boîte
+  int q = nbOfVertices - 4; //on enlève les 4 coins de la boîte
+  edges.push_back(1);
+  edges.push_back(q+1);
+  edges.push_back(label2);
+  edges.push_back(1);
+  edges.push_back(q+2);
+  edges.push_back(label2);
+  edges.push_back(1);
+  edges.push_back(q+3);
+  edges.push_back(label2);
+  edges.push_back(1);
+  edges.push_back(q+4);
+  edges.push_back(label2);
+}
