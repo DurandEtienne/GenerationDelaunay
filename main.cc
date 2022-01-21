@@ -11,7 +11,7 @@ int main()
 {
 
   vector<vector<double>> Res;
-  vector<double> Points;
+  vector<double> Points,PointsInitiaux;
   vector<double> Aretes;
   vector<double> Triangles;
 
@@ -19,6 +19,7 @@ int main()
   cout << "le nom du fichier est  : " << nomdufichier << endl;
   Res = lecture(nomdufichier);
   Points = Res[0];
+  PointsInitiaux  = Res[0]; //Contient les points de la géométrie, ne sera pas modifié, permet de savoir si les triangles créés appartiennet à la géométrie
   Aretes = Res[1];
   //Triangles = Res[2];
 
@@ -34,7 +35,8 @@ int main()
    buildBoiteEnglobante(Aretes, Points);
    InitializeMeshBoite(Triangles, Aretes, Points);
 
-   int NbofPoints = Points.size()/3;
+   int NbofPoints = Points.size()/3 - 4 ; //On enlève les points de la boîte englobante
+   cout << "le nombre de points est  : " << NbofPoints << endl;
    vector <double> point2(2);
    for (int i = 1; i < NbofPoints; i++)
    {
@@ -43,6 +45,7 @@ int main()
      deleteEdgesOnCavityAndReconnect(point2, Triangles, Aretes, Points);
    }
 
+   deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
 
 
    write (Triangles, Aretes, Points);

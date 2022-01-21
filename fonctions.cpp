@@ -446,7 +446,7 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
   // double label(0.);
   // double label2(1.);
   //for (int p = 0; nbOfVertices; p++)
-  double x, y, x_min(0.), x_max(0.), y_min(0.), y_max(0.), label(vertices[2]), label2(edges[2]);
+  double x, y, x_min(0.), x_max(0.), y_min(0.), y_max(0.), label(5), label2(6);
 
   //Parcours de la liste des points pour déterminer les min et max
   for (int p = 0; p < nbOfVertices; p++)
@@ -509,8 +509,8 @@ void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vecto
 {
   int nbOfVertices = vertices.size() / 3;
   double label2,label3;
-  label2 = 1;
-  label3 = 2;
+  label2 = 5;
+  label3 = 3;
   // Identification du premier point géométrique
   vector<double> premier_point(2);
   premier_point[0] = vertices[0];
@@ -553,4 +553,94 @@ void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vecto
 void InitializeMeshBoite(vector<double> point, vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
 {
   deleteEdgesOnCavityAndReconnect(point, triangles, edges, vertices);
+}
+
+int verifyTriangleInGeometry(int k,std::vector<double> triangles, std::vector<double> vertices_initial)
+{
+  int nbOfVerticesInitial = vertices_initial.size();
+  for (int i = 0; i < nbOfVerticesInitial; i++)
+  {
+    if (triangles[k] == vertices_initial[i])
+    {
+      for (int j = 0; j < nbOfVerticesInitial; j++)
+      {
+        if (triangles[k+1] == vertices_initial[j])
+        {
+          for (int l = 0; l < nbOfVerticesInitial; l++)
+          {
+            if (triangles[k+2] == vertices_initial[l])
+            {
+              return 1;
+            }
+            else
+            {
+              return 0;
+            }
+          }
+        }
+        else
+        {
+          return 0;
+        }
+      }
+    }
+    else
+    {
+      return 0;
+    }
+  }
+}
+
+
+void deleteBoiteEnglobante(vector<double> &triangles, vector<double> &edges, vector<double> &vertices, vector<double> vertices_initial)
+{
+  int nbOfVertices = vertices.size() / 3;
+  int nbOfEdges = edges.size() / 3;
+  int bas_gauche, bas_droite, haut_gauche, haut_droite;
+  int label;
+  vector<int> edgesToDelete, trianglesToDelete;
+
+  //Parcours de la liste des points pour déterminer les min et max et rechercher les points de la boîte englobante, à optimiser plus tard !!!!!!!!!!!
+  int p = 0;
+  while (vertices[3*p+2] != 5)
+  {
+    p = p+1;
+  }
+  bas_gauche = p+1;
+  bas_droite = p+2;
+  haut_droite = p+3;
+  haut_gauche = p+4;
+  //cout << "bas_gauche = " << bas_gauche << "   bas_droite = " << bas_droite << "   haut_droite = " << haut_droite << "   haut_gauche = " << haut_gauche << endl;
+
+  for (int i = 0; i < nbOfEdges; i++)
+  {
+    if (edges[3*i] == bas_gauche || edges[3*i] == bas_droite || edges[3*i] == haut_droite || edges[3*i] == haut_gauche || edges[3*i+1] == bas_gauche || edges[3*i+1] == bas_droite || edges[3*i+1] == haut_droite || edges[3*i+1] == haut_gauche)
+    {
+      edgesToDelete.push_back(i);
+    }
+  }
+
+  for (int j = edgesToDelete.size()-1; j >= 0 ; j--)
+  {
+    auto edge_to_remove = edges.begin() + 3*edgesToDelete[j];
+    edges.erase(edge_to_remove);
+    edges.erase(edge_to_remove+1);
+    edges.erase(edge_to_remove+2);
+  }
+
+  int nbOfTriangles = triangles.size() / 4;
+  for (int k = 0; k < nbOfTriangles; k++)
+  {
+    if (verifyTriangleInGeometry(k, triangles, vertices_initial) == 1)
+    {
+      trianglesToDelete.push_back(k);
+    }
+  }
+
+  cout << "les triangles à supprimer sont : " << endl;
+  for (int k = 0; k < trianglesToDelete.size(); k++)
+  {
+    cout << trianglesToDelete[k] << endl;
+  }
+
 }

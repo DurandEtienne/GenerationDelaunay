@@ -128,7 +128,7 @@ vector<vector<double>> lecture(string nomdufichier)
 void write (vector<double> triangles , vector<double> edges ,vector<double> vertices)
 {
   ofstream newmesh;
-  newmesh.open("modifiedMesh.mesh");
+  newmesh.open("modifiedMesh2.mesh");
   newmesh << "MeshVersionFormatted 1\n\nDimension 2\n\n"<< endl;
   bool finished=true;
   newmesh<<"Vertices\n"<<endl;

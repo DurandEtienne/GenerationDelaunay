@@ -44,3 +44,7 @@ void buildBoiteEnglobante(std::vector<double> &edges, std::vector<double> &verti
 void InitializeMeshBoite(std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
 
 void AdvanceMeshBoite(int i, std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
+
+void deleteBoiteEnglobante(std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices, std::vector<double> vertices_initial);
+
+int verifyTriangleInGeometry(int k,std::vector<double> triangles,std::vector<double> vertices_initial);
