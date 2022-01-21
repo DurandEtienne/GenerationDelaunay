@@ -507,37 +507,10 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
 
 void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
 {
-  // int c = vertices.size() -12;
-  // vector d(4);
-  // vector premier_point(2), bas_gauche(2), bas_droite(2), haut_gauche(2), haut_droite(2);
-  // int min(1);
-  // premier_point[0] = vertices[0];
-  // premier_point[1] = vertices[1];
-  // bas_gauche[0] = vertices[c];
-  // bas_gauche[1] = vertices[c+1];
-  // bas_gauche[0] = vertices[c+3];
-  // bas_gauche[1] = vertices[c+4];
-  // bas_gauche[0] = vertices[c+6];
-  // bas_gauche[1] = vertices[c+7];
-  // bas_gauche[0] = vertices[c+9];
-  // bas_gauche[1] = vertices[c+10];
-  // d[1] = distance(bas_gauche,premier_point);
-  // d[2] = distance(bas_droite, premier_point);
-  // d[3]= distance(haut_gauche, premier_point);
-  // d[4] = distance(haut_droite, premier_point);
-  //
-  // for (int i=1;i<4,i++)
-  // {
-  //   if (d[i] < min)
-  //   {
-  //     min = i;
-  //   }
-  // }
-
   int nbOfVertices = vertices.size() / 3;
   double label2,label3;
-  label2 = edges[2];
-  label3 = triangles[3];
+  label2 = 1;
+  label3 = 2;
   // Identification du premier point géométrique
   vector<double> premier_point(2);
   premier_point[0] = vertices[0];
@@ -558,7 +531,7 @@ void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vecto
   edges.push_back(q+4);
   edges.push_back(label2);
 
-
+  //Création des 4 premiers triangles de la boîte
   triangles.push_back(1);
   triangles.push_back(q+1);
   triangles.push_back(q+2);
@@ -575,5 +548,9 @@ void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vecto
   triangles.push_back(q+4);
   triangles.push_back(q+1);
   triangles.push_back(label3);
+}
 
+void InitializeMeshBoite(vector<double> point, vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
+{
+  deleteEdgesOnCavityAndReconnect(point, triangles, edges, vertices);
 }

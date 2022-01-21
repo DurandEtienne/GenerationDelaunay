@@ -42,3 +42,5 @@ void deleteEdgesOnCavityAndReconnect(std::vector<double> point, std::vector<doub
 void buildBoiteEnglobante(std::vector<double> &edges, std::vector<double> &vertices);
 
 void InitializeMeshBoite(std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
+
+void AdvanceMeshBoite(int i, std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
