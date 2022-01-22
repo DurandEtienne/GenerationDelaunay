@@ -58,3 +58,5 @@ void AdvanceMeshBoite(int i, std::vector<double> &triangles, std::vector<double>
 void getBordersBack(std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> vertices);
 
 void LabelizeBorderEdges(std::vector<double> &edges);
+
+void AddPointsInMesh(int IndexTriangle, std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);

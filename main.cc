@@ -50,6 +50,7 @@ int main()
   //deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
   getBordersBack(Triangles, Aretes, Points);
   LabelizeBorderEdges(Aretes);
+  AddPointsInMesh(4,Triangles, Aretes, Points);
 
 
   // écriture du maillage dans le fichier
@@ -68,7 +69,6 @@ int main()
   // {
   //   cout << cavityIndex[i] << endl;
   // }
-
 
   return 0;
 }

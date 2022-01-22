@@ -800,3 +800,26 @@ void LabelizeBorderEdges(std::vector<double> &edges)
     }
   }
 }
+
+
+void AddPointsInMesh(int IndexTriangle, vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
+{
+  int IndexPoint1, IndexPoint2, IndexPoint3;
+  IndexPoint1 = triangles[IndexTriangle*4];
+  IndexPoint2 = triangles[IndexTriangle*4+1];
+  IndexPoint3 = triangles[IndexTriangle*4+2];
+  double x_G,y_G,x1,x2,x3,y1,y2,y3;
+  x1 = vertices[IndexPoint1*3];
+  y1 = vertices[IndexPoint1*3+1];
+  x2 = vertices[IndexPoint2*3];
+  y2 = vertices[IndexPoint2*3+1];
+  x3 = vertices[IndexPoint3*3];
+  y3 = vertices[IndexPoint3*3+1];
+  x_G = (x1+x2+x3)/3;
+  y_G = (y1+y2+y3)/3;
+
+  vector<double> pointToAdd(2);
+  pointToAdd[0] = x_G;
+  pointToAdd[1] = y_G;
+  deleteEdgesOnCavityAndReconnect(pointToAdd, triangles, edges, vertices);
+}
