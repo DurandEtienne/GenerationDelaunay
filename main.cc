@@ -18,9 +18,9 @@ int main()
   string nomdufichier = "test_non_convexe.mesh";
   cout << "le nom du fichier est  : " << nomdufichier << endl;
   Res = lecture(nomdufichier);
-  Points = Res[0];
+  // Points = Res[0];
   PointsInitiaux  = Res[0]; //Contient les points de la géométrie, ne sera pas modifié, permet de savoir si les triangles créés appartiennet à la géométrie
-  Aretes = Res[1];
+  // Aretes = Res[1];
   //Triangles = Res[2];
 
   vector <double> point(2);
@@ -32,21 +32,19 @@ int main()
    //cout << "cercle " << inCircumscribedCircle(point,7,Triangles,Aretes,Points) << endl;
 
    //deleteEdgesOnCavityAndReconnect(point, Triangles, Aretes, Points);
-   buildBoiteEnglobante(Aretes, Points);
-   InitializeMeshBoite(Triangles, Aretes, Points);
-
-   int NbofPoints = Points.size()/3 - 4 ; //On enlève les points de la boîte englobante
-   cout << "le nombre de points est  : " << NbofPoints << endl;
+   buildBoiteEnglobante(Aretes, Points,PointsInitiaux);
+   InitializeMeshBoite(Triangles, Aretes, Points,PointsInitiaux);
+   int NbofPointsInitiaux = PointsInitiaux.size()/3; //On enlève les PointsInitiaux de la boîte englobante
+   cout << "le nombre de PointsInitiaux est  : " << NbofPointsInitiaux << endl;
    vector <double> point2(2);
-   for (int i = 1; i < NbofPoints; i++)
+   for (int i = 1; i < NbofPointsInitiaux; i++)
    {
-     point2[0] = Points[i*3];
-     point2[1] = Points[i*3+1];
+     point2[0] = PointsInitiaux[i*3];
+     point2[1] = PointsInitiaux[i*3+1];
      deleteEdgesOnCavityAndReconnect(point2, Triangles, Aretes, Points);
    }
-
-   deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
-
+   
+  //  deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
 
    write (Triangles, Aretes, Points);
   // vector<int> cavityIndex;

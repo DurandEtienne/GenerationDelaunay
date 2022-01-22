@@ -436,10 +436,10 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
     }
 }
 
-void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
+void buildBoiteEnglobante(vector<double> &edges, vector<double> vertices, vector<double> intialVertices)
 {
   // Détermination des minimums et maximums en x et y
-  int nbOfVertices = vertices.size() / 3;
+  int nbOfVertices = intialVertices.size() / 3;
   int nbOfEdges = edges.size() / 3;
 
   // double x,y,x_min,x_max,y_min,y_max;
@@ -452,8 +452,8 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
   for (int p = 0; p < nbOfVertices; p++)
   {
 
-    x = vertices[3*p];
-    y = vertices[3*p+1];
+    x = intialVertices[3*p];
+    y = intialVertices[3*p+1];
     if (x< x_min)
     {
       x_min = x;
@@ -505,7 +505,7 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices)
   edges.push_back(label2);
 }
 
-void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
+void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges,vector<double> &vertices, vector<double> initialVertices)
 {
   int nbOfVertices = vertices.size() / 3;
   double label2,label3;
@@ -513,40 +513,42 @@ void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges, vecto
   label3 = 3;
   // Identification du premier point géométrique
   vector<double> premier_point(2);
-  premier_point[0] = vertices[0];
-  premier_point[1] = vertices[1];
-
+  premier_point[0] = initialVertices[0];
+  premier_point[1] = initialVertices[1];
+  vertices.push_back(premier_point[0]);
+  vertices.push_back(premier_point[1]);
+  vertices.push_back(0);
   //Liaison de ce premier point avec les 4 coins de la boîte
-  int q = nbOfVertices - 4; //on enlève les 4 coins de la boîte
+  //   int q = nbOfVertices - 4; //on enlève les 4 coins de la boîte
   edges.push_back(1);
-  edges.push_back(q+1);
+  edges.push_back(5);
   edges.push_back(label2);
-  edges.push_back(1);
-  edges.push_back(q+2);
+  edges.push_back(2);
+  edges.push_back(5);
   edges.push_back(label2);
-  edges.push_back(1);
-  edges.push_back(q+3);
+  edges.push_back(3);
+  edges.push_back(5);
   edges.push_back(label2);
-  edges.push_back(1);
-  edges.push_back(q+4);
+  edges.push_back(4);
+  edges.push_back(5);
   edges.push_back(label2);
 
   //Création des 4 premiers triangles de la boîte
+  triangles.push_back(5);
   triangles.push_back(1);
-  triangles.push_back(q+1);
-  triangles.push_back(q+2);
+  triangles.push_back(2);
+  triangles.push_back(label3);
+  triangles.push_back(5);
+  triangles.push_back(2);
+  triangles.push_back(3);
+  triangles.push_back(label3);
+  triangles.push_back(5);
+  triangles.push_back(3);
+  triangles.push_back(4);
   triangles.push_back(label3);
   triangles.push_back(1);
-  triangles.push_back(q+2);
-  triangles.push_back(q+3);
-  triangles.push_back(label3);
+  triangles.push_back(4);
   triangles.push_back(1);
-  triangles.push_back(q+3);
-  triangles.push_back(q+4);
-  triangles.push_back(label3);
-  triangles.push_back(1);
-  triangles.push_back(q+4);
-  triangles.push_back(q+1);
   triangles.push_back(label3);
 }
 
