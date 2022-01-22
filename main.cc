@@ -39,17 +39,27 @@ int main()
    int NbofPointsInitiaux = PointsInitiaux.size()/3; //On enlève les PointsInitiaux de la boîte englobante
    vector <double> point2(2);
    for (int i = 1; i < NbofPointsInitiaux; i++)
+  // for (int i = 1; i < 10; i++)
    {
      point2[0] = PointsInitiaux[i*3];
      point2[1] = PointsInitiaux[i*3+1];
      deleteEdgesOnCavityAndReconnect(point2, Triangles, Aretes, Points);
    }
 
+  //Suppression de la boîte englobante
   //deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
   getBordersBack(Triangles, Aretes, Points);
   LabelizeBorderEdges(Aretes);
-  write_mesh (Triangles, Aretes, Points, nouveaunomdufichier); // écriture du maillage dans le fichier
-  // write_sol(Qualite, nouveaunomdufichier); // ecriture de la qualite des triangles dans le fichier
+
+
+  // écriture du maillage dans le fichier
+  write_mesh (Triangles, Aretes, Points, nouveaunomdufichier);
+
+
+  //Calcul de la qualité des Triangles
+  vector<double> Qualite;
+  Qualite = measureMeshQuality(Triangles, Points);
+  write_sol(Qualite, nouveaunomdufichier); // ecriture de la qualite des triangles dans le fichier
   // vector<int> cavityIndex;
   // cavityIndex = getTriangleCavity(point,Triangles,Aretes,Points);
   // int size = cavityIndex.size();
