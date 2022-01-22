@@ -60,3 +60,5 @@ void getBordersBack(std::vector<double> &triangles, std::vector<double> &edges, 
 void LabelizeBorderEdges(std::vector<double> &edges);
 
 void AddPointsInMesh(int IndexTriangle, std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
+
+void AddPointsInAllTriangles(std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);

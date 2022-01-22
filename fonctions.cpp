@@ -805,9 +805,9 @@ void LabelizeBorderEdges(std::vector<double> &edges)
 void AddPointsInMesh(int IndexTriangle, vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
 {
   int IndexPoint1, IndexPoint2, IndexPoint3;
-  IndexPoint1 = triangles[IndexTriangle*4];
-  IndexPoint2 = triangles[IndexTriangle*4+1];
-  IndexPoint3 = triangles[IndexTriangle*4+2];
+  IndexPoint1 = triangles[(IndexTriangle-1)*4];
+  IndexPoint2 = triangles[(IndexTriangle-1)*4+1];
+  IndexPoint3 = triangles[(IndexTriangle-1)*4+2];
   double x_G,y_G,x1,x2,x3,y1,y2,y3;
   x1 = vertices[IndexPoint1*3];
   y1 = vertices[IndexPoint1*3+1];
@@ -822,4 +822,12 @@ void AddPointsInMesh(int IndexTriangle, vector<double> &triangles, vector<double
   pointToAdd[0] = x_G;
   pointToAdd[1] = y_G;
   deleteEdgesOnCavityAndReconnect(pointToAdd, triangles, edges, vertices);
+}
+
+void AddPointsInAllTriangles(vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
+{
+  for (int i = 0; i< triangles.size()/4; i++)
+  {
+    AddPointsInMesh(i+1, triangles, edges, vertices);
+  }
 }
