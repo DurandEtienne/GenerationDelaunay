@@ -27,6 +27,8 @@ std::vector<int> getTriangleNeighbors(std::vector<double> triangleIndex,std::vec
 
 std::vector<int> getTriangleCavity(std::vector<double> point, std::vector<double> triangles, std::vector<double> edges, std::vector<double> vertices);
 
+std::vector<double> measureMeshQuality(std::vector<double> triangles, std::vector<double> vertices);
+
 bool edgeAlreadyHere(std::vector<std::vector<double>> edgs,std::vector<double>edg);
 
 bool alreadyConnected(std::vector<double>Points,double id);
