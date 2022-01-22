@@ -125,10 +125,10 @@ vector<vector<double>> lecture(string nomdufichier)
     Res = {Points, Aretes, Triangles};
     return Res;
 }
-void write (vector<double> triangles , vector<double> edges ,vector<double> vertices)
+void write_mesh (vector<double> triangles , vector<double> edges ,vector<double> vertices, string nomdufichier)
 {
   ofstream newmesh;
-  newmesh.open("modifiedMesh2.mesh");
+  newmesh.open(nomdufichier+".mesh");
   newmesh << "MeshVersionFormatted 1\n\nDimension 2\n\n"<< endl;
   bool finished=true;
   newmesh<<"Vertices\n"<<endl;
@@ -150,6 +150,23 @@ void write (vector<double> triangles , vector<double> edges ,vector<double> vert
   for (int i = 0; i < triangles.size(); i+=4)
   {
     newmesh<<triangles[i]<<" " <<triangles[i+1]<<" " <<triangles[i+2]<<" " <<triangles[i+3]<<endl;
+  }
+  newmesh<<"\n";
+  newmesh<<"End";
+}
+
+
+void write_sol (vector<double> qualite, string nomdufichier)
+{
+  ofstream newmesh;
+  newmesh.open(nomdufichier+".sol");
+  newmesh << "MeshVersionFormatted 1\n\nDimension 2\n\n"<< endl;
+  bool finished=true;
+  newmesh<<"SolAtTriangles\n"<<endl;
+  newmesh<<qualite.size()<< endl;
+  for (int i = 0; i < qualite.size(); i++)
+  {
+    newmesh<<qualite[i]<<endl;
   }
   newmesh<<"\n";
   newmesh<<"End";

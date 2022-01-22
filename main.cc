@@ -16,6 +16,8 @@ int main()
   vector<double> Triangles;
 
   string nomdufichier = "test_non_convexe.mesh";
+  string nouveaunomdufichier = "modifiedMesh2";
+
   cout << "le nom du fichier est  : " << nomdufichier << endl;
   Res = lecture(nomdufichier);
   // Points = Res[0];
@@ -35,7 +37,6 @@ int main()
    buildBoiteEnglobante(Aretes, Points,PointsInitiaux);
    InitializeMeshBoite(Triangles, Aretes, Points,PointsInitiaux);
    int NbofPointsInitiaux = PointsInitiaux.size()/3; //On enlève les PointsInitiaux de la boîte englobante
-   cout << "le nombre de PointsInitiaux est  : " << NbofPointsInitiaux << endl;
    vector <double> point2(2);
    for (int i = 1; i < NbofPointsInitiaux; i++)
    {
@@ -44,9 +45,10 @@ int main()
      deleteEdgesOnCavityAndReconnect(point2, Triangles, Aretes, Points);
    }
 
-  //  deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
-  //getBordersBack(Triangles, Aretes, Points);
-  write (Triangles, Aretes, Points);
+  //deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
+  getBordersBack(Triangles, Aretes, Points);
+  write_mesh (Triangles, Aretes, Points, nouveaunomdufichier); // écriture du maillage dans le fichier
+  // write_sol(Qualite, nouveaunomdufichier); // ecriture de la qualite des triangles dans le fichier
   // vector<int> cavityIndex;
   // cavityIndex = getTriangleCavity(point,Triangles,Aretes,Points);
   // int size = cavityIndex.size();
