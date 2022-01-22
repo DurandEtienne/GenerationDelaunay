@@ -457,7 +457,7 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
     }
 }
 
-void buildBoiteEnglobante(vector<double> &edges, vector<double> vertices, vector<double> intialVertices)
+void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices, vector<double> intialVertices)
 {
   // Détermination des minimums et maximums en x et y
   int nbOfVertices = intialVertices.size() / 3;
@@ -702,7 +702,7 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                         m = (int)triangles[j + k];
                     }
                 }
-                if (abs(n - m) == 1)
+                if (abs(n - m) == 1 || abs(n - m) == 8)
                 {
                     continue;
                 }
@@ -721,15 +721,15 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                                 {
                                     trianglesToDelete.push_back(p / 4 + 1);
                                     nbofTrianglesFound++;
-                                    if (abs(triangles[p] - triangles[p + 1]) != 1)
+                                    if (abs(triangles[p] - triangles[p + 1]) != 1 && abs(triangles[p] - triangles[p + 1]) != 8 )
                                     {
                                         edgesToDelete.push_back({triangles[p], triangles[p + 1], 1});
                                     }
-                                    if (abs(triangles[p] - triangles[p + 2]) != 1)
+                                    if (abs(triangles[p] - triangles[p + 2]) != 1 && abs(triangles[p] - triangles[p + 2]) != 8)
                                     {
                                         edgesToDelete.push_back({triangles[p], triangles[p + 2], 1});
                                     }
-                                    if (abs(triangles[p + 2] - triangles[p + 1]) != 1)
+                                    if (abs(triangles[p + 2] - triangles[p + 1]) != 1 && abs(triangles[p + 2] - triangles[p + 1]) != 8)
                                     {
                                         edgesToDelete.push_back({triangles[p + 2], triangles[p + 1], 1});
                                     }
