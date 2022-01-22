@@ -323,6 +323,25 @@ vector<int> getTriangleCavity(vector<double> point, vector<double> triangles, ve
 //         fixEdgesindexing(edgesToDelete,edgesToDelete[p]);
 //     }
 // }
+vector<double> measureMeshQuality(vector<double> triangles,vector<double> vertices)
+{
+    vector<double> res;
+    for (int i = 0; i < triangles.size(); i+=4)
+    {
+        double s12x=pow(vertices[3*(triangles[i]-1)]-vertices[3*(triangles[i+1]-1)],2);
+        double s13x=pow(vertices[3*(triangles[i]-1)]-vertices[3*(triangles[i+2]-1)],2);
+        double s23x=pow(vertices[3*(triangles[i+1]-1)]-vertices[3*(triangles[i+2]-1)],2);
+        double s12y=pow(vertices[3*(triangles[i]-1)+1]-vertices[3*(triangles[i+1]-1)+1],2);
+        double s13y=pow(vertices[3*(triangles[i]-1)+1]-vertices[3*(triangles[i+2]-1)+1],2);
+        double s23y=pow(vertices[3*(triangles[i+1]-1)+1]-vertices[3*(triangles[i+2]-1)+1],2);
+        double num= (sqrt(3)/12.)*(s12x+s12y+s13x+s13y+s23x+s23y);
+        double a=sqrt(s12x+s12y),b=sqrt(s13x+s13y),c=sqrt(s23x+s23y);
+        double p=(a+b+c)/2.;
+        double denum=sqrt(p*(p-a)*(p-b)*(p-c));
+        res.push_back(num/denum);
+    }
+    return res;
+}
 bool edgeAlreadyHere(vector<vector<double>> edgs,vector<double>edg)
 {
     for (int i = 0; i < edgs.size(); i++)
