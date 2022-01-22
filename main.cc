@@ -43,9 +43,9 @@ int main()
      point2[1] = PointsInitiaux[i*3+1];
      deleteEdgesOnCavityAndReconnect(point2, Triangles, Aretes, Points);
    }
-   
+
   //  deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
-  getBordersBack(Triangles, Aretes, Points);
+  //getBordersBack(Triangles, Aretes, Points);
   write (Triangles, Aretes, Points);
   // vector<int> cavityIndex;
   // cavityIndex = getTriangleCavity(point,Triangles,Aretes,Points);
