@@ -345,6 +345,28 @@ bool alreadyConnected(vector<double>Points,double id)
     }
     return false;
 }
+bool alreadyDeleted(vector<int> Points, int id)
+{
+    for (int i = 0; i < Points.size(); i++)
+    {
+        if (Points[i] == id)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+void fixindexing(vector<int> &triangles, int ind)
+{
+    for (int i = 0; i < triangles.size(); i++)
+    {
+
+        if (triangles[i] > ind)
+        {
+            triangles[i] -= 1;
+        }
+    }
+}
 void eraseEdge(vector<double> &edgs,vector<double> edg)
 {
     for (int i = 0; i < edgs.size(); i+=3)
@@ -645,4 +667,103 @@ void deleteBoiteEnglobante(vector<double> &triangles, vector<double> &edges, vec
     cout << trianglesToDelete[k] << endl;
   }
 
+}
+void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<double> vertices, int nbOfIntialVertices)
+{
+    vector<int> trianglesToDelete;
+    vector<vector<double>> edgesToDelete;
+    for (int i = 1; i < 5; i++)
+    {
+        for (int j = 0; j < triangles.size(); j += 4)
+        {
+            if (i == (int)triangles[j] || i == (int)triangles[j + 1] || i == (int)triangles[j + 2])
+            {
+                // triangles with edges on boundary box
+                if (((triangles[j] < 5) + (triangles[j + 1] < 5) + (triangles[j + 2] < 5)) > 1)
+                {
+                    if (!alreadyDeleted(trianglesToDelete, j / 4 + 1))
+                    {
+                        trianglesToDelete.push_back(j / 4 + 1);
+                    }
+                    continue;
+                }
+                trianglesToDelete.push_back(j / 4 + 1);
+                int n = 0, m = 0;
+                for (int k = 0; k < 3; k++)
+                {
+                    if ((int)triangles[j + k] != i)
+                    {
+                        n = (int)triangles[j + k];
+                    }
+                }
+                for (int k = 0; k < 3; k++)
+                {
+                    if ((int)triangles[j + k] != i && (int)triangles[j + k] != n)
+                    {
+                        m = (int)triangles[j + k];
+                    }
+                }
+                if (abs(n - m) == 1)
+                {
+                    continue;
+                }
+                else
+                {
+                    edgesToDelete.push_back({n, m, 1});
+                    bool finished = false;
+                    while (!finished)
+                    {
+                        int nbofTrianglesFound = 0;
+                        for (int p = 0; p < triangles.size(); p += 4)
+                        {
+                            if (edgeAlreadyHere(edgesToDelete, {triangles[p], triangles[p + 1], 1}) || edgeAlreadyHere(edgesToDelete, {triangles[p], triangles[p + 2], 1}) || edgeAlreadyHere(edgesToDelete, {triangles[p + 2], triangles[p + 1], 1}))
+                            {
+                                if (!alreadyDeleted(trianglesToDelete, p / 4 + 1))
+                                {
+                                    trianglesToDelete.push_back(p / 4 + 1);
+                                    nbofTrianglesFound++;
+                                    if (abs(triangles[p] - triangles[p + 1]) != 1)
+                                    {
+                                        edgesToDelete.push_back({triangles[p], triangles[p + 1], 1});
+                                    }
+                                    if (abs(triangles[p] - triangles[p + 2]) != 1)
+                                    {
+                                        edgesToDelete.push_back({triangles[p], triangles[p + 2], 1});
+                                    }
+                                    if (abs(triangles[p + 2] - triangles[p + 1]) != 1)
+                                    {
+                                        edgesToDelete.push_back({triangles[p + 2], triangles[p + 1], 1});
+                                    }
+                                }
+                            }
+                        }
+                        if (nbofTrianglesFound == 0)
+                        {
+                            finished = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // Deleting triangles that we found
+    for (int i = 0; i < trianglesToDelete.size(); i++)
+    {
+        triangles.erase(triangles.begin() + (trianglesToDelete[i] - 1) * 4, triangles.begin() + (trianglesToDelete[i]) * 4);
+        fixindexing(trianglesToDelete, trianglesToDelete[i]);
+    }
+    // Detecting edges comming from boundry box
+    for (int i = 0; i < edges.size(); i+=3)
+    {
+        if(edges[i]<5 || edges[i+1]<5)
+        {
+            edgesToDelete.push_back({edges[i],edges[i+1],1});
+        }
+    }
+    // Deleting all edges that we found
+    for (int i = 0; i < edgesToDelete.size(); i++)
+    {
+        eraseEdge(edges, edgesToDelete[i]);
+    }
+    
 }

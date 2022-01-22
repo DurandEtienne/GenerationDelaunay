@@ -31,6 +31,10 @@ bool edgeAlreadyHere(std::vector<std::vector<double>> edgs,std::vector<double>ed
 
 bool alreadyConnected(std::vector<double>Points,double id);
 
+bool alreadyDeleted(vector<int> Points, int id);
+
+void fixindexing(vector<int> &triangles, int ind);
+
 void eraseEdge(std::vector<double> &edgs,std::vector<double> edg);
 
 bool inCircumscribedCircle(std::vector<double> point, int triangleIndex, std::vector<double> triangles, std::vector<double> edges, std::vector<double> vertices);
@@ -48,3 +52,5 @@ void AdvanceMeshBoite(int i, std::vector<double> &triangles, std::vector<double>
 void deleteBoiteEnglobante(std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices, std::vector<double> vertices_initial);
 
 int verifyTriangleInGeometry(int k,std::vector<double> triangles,std::vector<double> vertices_initial);
+
+void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<double> vertices, int nbOfIntialVertices);
