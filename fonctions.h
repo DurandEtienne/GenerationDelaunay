@@ -43,7 +43,7 @@ double haveOneCommonEdge(std::vector<double> triangle1, std::vector<double> tria
 
 void deleteEdgesOnCavityAndReconnect(std::vector<double> point, std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
 
-void buildBoiteEnglobante(std::vector<double> &edges, std::vector<double> vertices, std::vector<double> intialVertices);
+void buildBoiteEnglobante(std::vector<double> &edges, std::vector<double> &vertices, std::vector<double> intialVertices);
 
 void InitializeMeshBoite(std::vector<double> &triangles, std::vector<double> &edges,std::vector<double> &vertices, std::vector<double> initialVertices);
 

@@ -457,7 +457,7 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
     }
 }
 
-void buildBoiteEnglobante(vector<double> &edges, vector<double> vertices, vector<double> intialVertices)
+void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices, vector<double> intialVertices)
 {
   // Détermination des minimums et maximums en x et y
   int nbOfVertices = intialVertices.size() / 3;
