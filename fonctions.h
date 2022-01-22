@@ -31,9 +31,9 @@ bool edgeAlreadyHere(std::vector<std::vector<double>> edgs,std::vector<double>ed
 
 bool alreadyConnected(std::vector<double>Points,double id);
 
-bool alreadyDeleted(vector<int> Points, int id);
+bool alreadyDeleted(std::vector<int> Points, int id);
 
-void fixindexing(vector<int> &triangles, int ind);
+void fixindexing(std::vector<int> &triangles, int ind);
 
 void eraseEdge(std::vector<double> &edgs,std::vector<double> edg);
 
@@ -43,9 +43,9 @@ double haveOneCommonEdge(std::vector<double> triangle1, std::vector<double> tria
 
 void deleteEdgesOnCavityAndReconnect(std::vector<double> point, std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
 
-void buildBoiteEnglobante(vector<double> &edges, vector<double> vertices, vector<double> intialVertices);
+void buildBoiteEnglobante(std::vector<double> &edges, std::vector<double> vertices, std::vector<double> intialVertices);
 
-void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges,vector<double> &vertices, vector<double> initialVertices);
+void InitializeMeshBoite(std::vector<double> &triangles, std::vector<double> &edges,std::vector<double> &vertices, std::vector<double> initialVertices);
 
 void AdvanceMeshBoite(int i, std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
 
@@ -53,4 +53,4 @@ void deleteBoiteEnglobante(std::vector<double> &triangles, std::vector<double> &
 
 int verifyTriangleInGeometry(int k,std::vector<double> triangles,std::vector<double> vertices_initial);
 
-void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<double> vertices, int nbOfIntialVertices);
+void getBordersBack(std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> vertices);

@@ -45,8 +45,8 @@ int main()
    }
    
   //  deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
-
-   write (Triangles, Aretes, Points);
+  getBordersBack(Triangles, Aretes, Points);
+  write (Triangles, Aretes, Points);
   // vector<int> cavityIndex;
   // cavityIndex = getTriangleCavity(point,Triangles,Aretes,Points);
   // int size = cavityIndex.size();

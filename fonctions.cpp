@@ -360,7 +360,6 @@ void fixindexing(vector<int> &triangles, int ind)
 {
     for (int i = 0; i < triangles.size(); i++)
     {
-
         if (triangles[i] > ind)
         {
             triangles[i] -= 1;
@@ -668,7 +667,7 @@ void deleteBoiteEnglobante(vector<double> &triangles, vector<double> &edges, vec
   }
 
 }
-void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<double> vertices, int nbOfIntialVertices)
+void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<double> vertices)
 {
     vector<int> trianglesToDelete;
     vector<vector<double>> edgesToDelete;
@@ -709,7 +708,7 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                 }
                 else
                 {
-                    edgesToDelete.push_back({n, m, 1});
+                    edgesToDelete.push_back({(double)n, (double)m, 1.});
                     bool finished = false;
                     while (!finished)
                     {
@@ -765,5 +764,4 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
     {
         eraseEdge(edges, edgesToDelete[i]);
     }
-    
 }
