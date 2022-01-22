@@ -467,7 +467,7 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices, vecto
   // double label(0.);
   // double label2(1.);
   //for (int p = 0; nbOfVertices; p++)
-  double x, y, x_min(0.), x_max(0.), y_min(0.), y_max(0.), label(5), label2(6);
+  double x, y, x_min(0.), x_max(0.), y_min(0.), y_max(0.), label(0), label2(1);
 
   //Parcours de la liste des points pour déterminer les min et max
   for (int p = 0; p < nbOfVertices; p++)
@@ -530,8 +530,8 @@ void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges,vector
 {
   int nbOfVertices = vertices.size() / 3;
   double label2,label3;
-  label2 = 5;
-  label3 = 3;
+  label2 = 1;
+  label3 = 2;
   // Identification du premier point géométrique
   vector<double> premier_point(2);
   premier_point[0] = initialVertices[0];
@@ -706,7 +706,7 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                         m = (int)triangles[j + k];
                     }
                 }
-                if (abs(n - m) == 1)
+                if (abs(n - m) == 1 || abs(n - m) == 8)
                 {
                     continue;
                 }
@@ -725,15 +725,15 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                                 {
                                     trianglesToDelete.push_back(p / 4 + 1);
                                     nbofTrianglesFound++;
-                                    if (abs(triangles[p] - triangles[p + 1]) != 1)
+                                    if (abs(triangles[p] - triangles[p + 1]) != 1 && abs(triangles[p] - triangles[p + 1]) != 8 )
                                     {
                                         edgesToDelete.push_back({triangles[p], triangles[p + 1], 1});
                                     }
-                                    if (abs(triangles[p] - triangles[p + 2]) != 1)
+                                    if (abs(triangles[p] - triangles[p + 2]) != 1 && abs(triangles[p] - triangles[p + 2]) != 8)
                                     {
                                         edgesToDelete.push_back({triangles[p], triangles[p + 2], 1});
                                     }
-                                    if (abs(triangles[p + 2] - triangles[p + 1]) != 1)
+                                    if (abs(triangles[p + 2] - triangles[p + 1]) != 1 && abs(triangles[p + 2] - triangles[p + 1]) != 8)
                                     {
                                         edgesToDelete.push_back({triangles[p + 2], triangles[p + 1], 1});
                                     }
@@ -768,4 +768,16 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
     {
         eraseEdge(edges, edgesToDelete[i]);
     }
+}
+
+
+void LabelizeBorderEdges(std::vector<double> &edges)
+{
+  for (int i=0; i<edges.size()/3; i++)
+  {
+    if (abs(edges[i*3+1] - edges[i*3]) == 1 || abs(edges[i*3+1] - edges[i*3]) == 8)
+    {
+      edges[i*3+2] = 5;
+    }
+  }
 }

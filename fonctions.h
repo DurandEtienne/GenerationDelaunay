@@ -54,3 +54,5 @@ void AdvanceMeshBoite(int i, std::vector<double> &triangles, std::vector<double>
 // int verifyTriangleInGeometry(int k,std::vector<double> triangles,std::vector<double> vertices_initial);
 
 void getBordersBack(std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> vertices);
+
+void LabelizeBorderEdges(std::vector<double> &edges);
