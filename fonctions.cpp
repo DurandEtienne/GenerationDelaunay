@@ -732,6 +732,7 @@ void LabelizeBorderEdges(std::vector<double> &edges)
 
 void AddPointsInMesh(int IndexTriangle, vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
 {
+  // adding new points on gravity center to boost the mesh
   int IndexPoint1, IndexPoint2, IndexPoint3;
   IndexPoint1 = triangles[(IndexTriangle-1)*4];
   IndexPoint2 = triangles[(IndexTriangle-1)*4+1];
