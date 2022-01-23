@@ -541,7 +541,7 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices, vecto
 
 
   //Rajout des Aretes de la boite à la fin du vecteur contenant les arêtes
-  int q = nbOfVertices;
+  int q = 0;
   edges.push_back(q+1);
   edges.push_back(q+2);
   edges.push_back(label2);

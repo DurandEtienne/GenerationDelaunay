@@ -48,9 +48,9 @@ int main()
 
   //Suppression de la boîte englobante
   //deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
-  getBordersBack(Triangles, Aretes, Points);
-  LabelizeBorderEdges(Aretes);
-  AddPointsInAllTriangles(Triangles, Aretes, Points);
+  // getBordersBack(Triangles, Aretes, Points);
+  // LabelizeBorderEdges(Aretes);
+  // AddPointsInAllTriangles(Triangles, Aretes, Points);
   //AddPointsInAllTriangles(Triangles, Aretes, Points);
 
 
