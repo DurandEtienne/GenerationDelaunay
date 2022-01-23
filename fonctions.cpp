@@ -194,11 +194,13 @@ vector<int> getTriangleCavity(vector<double> point, vector<double> triangles, ve
     int nb_triangles = triangles.size() / 4;
     bool cavity;
     vector<int> cavityIndex;
+    // loop over triangles to find the ones that the circumscribed circle contain the point
     for (int i = 1; i <= nb_triangles; i++)
     {
         cavity = inCircumscribedCircle(point, i, triangles, edges, vertices);
         if (cavity == true)
         {
+            // adding traingle to the list
             cavityIndex.push_back(i);
         }
     }
@@ -328,6 +330,7 @@ vector<double> measureMeshQuality(vector<double> triangles,vector<double> vertic
     vector<double> res;
     for (int i = 0; i < triangles.size(); i+=4)
     {
+        // computing the edges length square and adding them
         double s12x=pow(vertices[3*(triangles[i]-1)]-vertices[3*(triangles[i+1]-1)],2);
         double s13x=pow(vertices[3*(triangles[i]-1)]-vertices[3*(triangles[i+2]-1)],2);
         double s23x=pow(vertices[3*(triangles[i+1]-1)]-vertices[3*(triangles[i+2]-1)],2);
@@ -337,6 +340,7 @@ vector<double> measureMeshQuality(vector<double> triangles,vector<double> vertic
         double num= (sqrt(3)/12.)*(s12x+s12y+s13x+s13y+s23x+s23y);
         double a=sqrt(s12x+s12y),b=sqrt(s13x+s13y),c=sqrt(s23x+s23y);
         double p=(a+b+c)/2.;
+        // triangle aire with Héron Formula
         double denum=sqrt(p*(p-a)*(p-b)*(p-c));
         res.push_back(num/denum);
     }
@@ -401,13 +405,17 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
     int n = trianglesInCavity.size(), ibeg;
     vector<vector<double>> edgesOnBoundry,edgesToNotKeep;
     vector<double> pointsToConnect;
+    // Adding the new point
     vertices.push_back(point[0]);
     vertices.push_back(point[1]);
     vertices.push_back(0);
+    // getting its index
     int nv = vertices.size()/3;
+
     for (int i = 0; i < n; i++)
     {
         ibeg = 4 * (trianglesInCavity[i] - 1);
+        // connecting all vertices of triangles on cavity
         if (!alreadyConnected(pointsToConnect, triangles[ibeg]))
         {
             edges.push_back(triangles[ibeg]);
@@ -435,6 +443,7 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         }
         else
         {
+            // edge that a previous triangle already had , commun one !! we are not going to keep it !!
             eraseEdge(edges, {triangles[ibeg], triangles[ibeg + 1], 1});
             edgesToNotKeep.push_back({triangles[ibeg], triangles[ibeg + 1], 1});
         }
@@ -444,6 +453,7 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         }
         else
         {
+            // edge that a previous triangle already had , commun one !! we are not going to keep it !!
             eraseEdge(edges, {triangles[ibeg], triangles[ibeg + 2], 1});
             edgesToNotKeep.push_back({triangles[ibeg], triangles[ibeg + 2], 1});
         }
@@ -453,10 +463,12 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         }
         else
         {
+            // edge that a previous triangle already had , commun one !! we are not going to keep it !!
             eraseEdge(edges, {triangles[ibeg+2], triangles[ibeg + 1], 1});
             edgesToNotKeep.push_back({triangles[ibeg+2], triangles[ibeg + 1], 1});
         }
     }
+    // deleting all cavity triangles
     int h = 0;
     for (int i = 0; i < n; i++)
     {
@@ -464,8 +476,11 @@ void deleteEdgesOnCavityAndReconnect(vector<double> point, vector<double> &trian
         triangles.erase(triangles.begin() + ibeg, triangles.begin() + ibeg + 4);
         h++;
     }
+    // creating new traingles
     for (int i = 0; i < edgesOnBoundry.size(); i++)
     {
+        // the two vertices of a boundary edge are connected to new point
+        // actually edgesOnBoundry still contain commun edge that has been deleted so we need to filter
         if(!edgeAlreadyHere(edgesToNotKeep,edgesOnBoundry[i]))
         {
             triangles.push_back(edgesOnBoundry[i][0]);
@@ -482,10 +497,6 @@ void buildBoiteEnglobante(vector<double> &edges, vector<double> &vertices, vecto
   int nbOfVertices = intialVertices.size() / 3;
   int nbOfEdges = edges.size() / 3;
 
-  // double x,y,x_min,x_max,y_min,y_max;
-  // double label(0.);
-  // double label2(1.);
-  //for (int p = 0; nbOfVertices; p++)
   double x, y, x_min(0.), x_max(0.), y_min(0.), y_max(0.), label(0), label2(1);
 
   //Parcours de la liste des points pour déterminer les min et max
@@ -588,119 +599,32 @@ void InitializeMeshBoite(vector<double> &triangles, vector<double> &edges,vector
   triangles.push_back(label3);
   triangles.push_back(1);
   triangles.push_back(4);
-  triangles.push_back(1);
+  triangles.push_back(5);
   triangles.push_back(label3);
 }
 
-void InitializeMeshBoite(vector<double> point, vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
-{
-  deleteEdgesOnCavityAndReconnect(point, triangles, edges, vertices);
-}
-
-// int verifyTriangleInGeometry(int k,std::vector<double> triangles, std::vector<double> vertices_initial)
+// void InitializeMeshBoite(vector<double> point, vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
 // {
-//   int nbOfVerticesInitial = vertices_initial.size();
-//   for (int i = 0; i < nbOfVerticesInitial; i++)
-//   {
-//     if (triangles[k] == vertices_initial[i])
-//     {
-//       for (int j = 0; j < nbOfVerticesInitial; j++)
-//       {
-//         if (triangles[k+1] == vertices_initial[j])
-//         {
-//           for (int l = 0; l < nbOfVerticesInitial; l++)
-//           {
-//             if (triangles[k+2] == vertices_initial[l])
-//             {
-//               return 1;
-//             }
-//             else
-//             {
-//               return 0;
-//             }
-//           }
-//         }
-//         else
-//         {
-//           return 0;
-//         }
-//       }
-//     }
-//     else
-//     {
-//       return 0;
-//     }
-//   }
+//   deleteEdgesOnCavityAndReconnect(point, triangles, edges, vertices);
 // }
-
-
-// void deleteBoiteEnglobante(vector<double> &triangles, vector<double> &edges, vector<double> &vertices, vector<double> vertices_initial)
-// {
-//   int nbOfVertices = vertices.size() / 3;
-//   int nbOfEdges = edges.size() / 3;
-//   int bas_gauche, bas_droite, haut_gauche, haut_droite;
-//   int label;
-//   vector<int> edgesToDelete, trianglesToDelete;
-//
-//   //Parcours de la liste des points pour déterminer les min et max et rechercher les points de la boîte englobante, à optimiser plus tard !!!!!!!!!!!
-//   int p = 0;
-//   while (vertices[3*p+2] != 5)
-//   {
-//     p = p+1;
-//   }
-//   bas_gauche = p+1;
-//   bas_droite = p+2;
-//   haut_droite = p+3;
-//   haut_gauche = p+4;
-//   //cout << "bas_gauche = " << bas_gauche << "   bas_droite = " << bas_droite << "   haut_droite = " << haut_droite << "   haut_gauche = " << haut_gauche << endl;
-//
-//   for (int i = 0; i < nbOfEdges; i++)
-//   {
-//     if (edges[3*i] == bas_gauche || edges[3*i] == bas_droite || edges[3*i] == haut_droite || edges[3*i] == haut_gauche || edges[3*i+1] == bas_gauche || edges[3*i+1] == bas_droite || edges[3*i+1] == haut_droite || edges[3*i+1] == haut_gauche)
-//     {
-//       edgesToDelete.push_back(i);
-//     }
-//   }
-//
-//   for (int j = edgesToDelete.size()-1; j >= 0 ; j--)
-//   {
-//     auto edge_to_remove = edges.begin() + 3*edgesToDelete[j];
-//     edges.erase(edge_to_remove);
-//     edges.erase(edge_to_remove+1);
-//     edges.erase(edge_to_remove+2);
-//   }
-//
-//   int nbOfTriangles = triangles.size() / 4;
-//   for (int k = 0; k < nbOfTriangles; k++)
-//   {
-//     if (verifyTriangleInGeometry(k, triangles, vertices_initial) == 1)
-//     {
-//       trianglesToDelete.push_back(k);
-//     }
-//   }
-//
-//   cout << "les triangles à supprimer sont : " << endl;
-//   for (int k = 0; k < trianglesToDelete.size(); k++)
-//   {
-//     cout << trianglesToDelete[k] << endl;
-//   }
-//
-// }
-
-
-
 
 void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<double> vertices)
 {
     vector<int> trianglesToDelete;
     vector<vector<double>> edgesToDelete;
+    int nbOfVerticesInside=vertices.size()-4;
+    // From each box vertice we are going to delete triangles that have at least one non boundry edge
+    // the loop is stoped at triangles that doesn't contain any new non-boundry edge, which means that we are about to go inside 
+    // boundary edges are detected as edges with consecutive vertices index 
+    // or with a diffrence equal to the number of vertices inside -1 (end of cycle)
     for (int i = 1; i < 5; i++)
     {
+        // loop over triangles comming from a boundary box vertices
         for (int j = 0; j < triangles.size(); j += 4)
         {
             if (i == (int)triangles[j] || i == (int)triangles[j + 1] || i == (int)triangles[j + 2])
             {
-                // triangles with edges on boundary box
+                // triangles with  boundary box edges
                 if (((triangles[j] < 5) + (triangles[j + 1] < 5) + (triangles[j + 2] < 5)) > 1)
                 {
                     if (!alreadyDeleted(trianglesToDelete, j / 4 + 1))
@@ -710,6 +634,7 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                     continue;
                 }
                 trianglesToDelete.push_back(j / 4 + 1);
+                // identifiying  the third edge and checking if it's a boundry edge 
                 int n = 0, m = 0;
                 for (int k = 0; k < 3; k++)
                 {
@@ -725,8 +650,9 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                         m = (int)triangles[j + k];
                     }
                 }
-                if (abs(n - m) == 1 || abs(n - m) == 8)
+                if (abs(n - m) == 1 || abs(n - m) == nbOfVerticesInside-1)
                 {
+                    // not a boundry edge!! we are about to go inside !!, move to the other triangle
                     continue;
                 }
                 else
@@ -738,27 +664,29 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                         int nbofTrianglesFound = 0;
                         for (int p = 0; p < triangles.size(); p += 4)
                         {
+                            // collecting non-boundary edges and triangle that we should delete 
                             if (edgeAlreadyHere(edgesToDelete, {triangles[p], triangles[p + 1], 1}) || edgeAlreadyHere(edgesToDelete, {triangles[p], triangles[p + 2], 1}) || edgeAlreadyHere(edgesToDelete, {triangles[p + 2], triangles[p + 1], 1}))
                             {
                                 if (!alreadyDeleted(trianglesToDelete, p / 4 + 1))
                                 {
                                     trianglesToDelete.push_back(p / 4 + 1);
                                     nbofTrianglesFound++;
-                                    if (abs(triangles[p] - triangles[p + 1]) != 1 && abs(triangles[p] - triangles[p + 1]) != 8 )
+                                    if (abs(triangles[p] - triangles[p + 1]) != 1 && abs(triangles[p] - triangles[p + 1]) != nbOfVerticesInside-1 )
                                     {
                                         edgesToDelete.push_back({triangles[p], triangles[p + 1], 1});
                                     }
-                                    if (abs(triangles[p] - triangles[p + 2]) != 1 && abs(triangles[p] - triangles[p + 2]) != 8)
+                                    if (abs(triangles[p] - triangles[p + 2]) != 1 && abs(triangles[p] - triangles[p + 2]) != nbOfVerticesInside-1)
                                     {
                                         edgesToDelete.push_back({triangles[p], triangles[p + 2], 1});
                                     }
-                                    if (abs(triangles[p + 2] - triangles[p + 1]) != 1 && abs(triangles[p + 2] - triangles[p + 1]) != 8)
+                                    if (abs(triangles[p + 2] - triangles[p + 1]) != 1 && abs(triangles[p + 2] - triangles[p + 1]) != nbOfVerticesInside-1)
                                     {
                                         edgesToDelete.push_back({triangles[p + 2], triangles[p + 1], 1});
                                     }
                                 }
                             }
                         }
+                        // if no triangle with new non-boundary edge is detected finish the while loop
                         if (nbofTrianglesFound == 0)
                         {
                             finished = true;
@@ -789,7 +717,7 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
     }
 }
 
-
+// giving labels to boundary edges to make them visible in plots
 void LabelizeBorderEdges(std::vector<double> &edges)
 {
   for (int i=0; i<edges.size()/3; i++)
