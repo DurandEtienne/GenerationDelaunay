@@ -735,15 +735,15 @@ void AddPointsInMesh(int IndexTriangle, vector<double> &triangles, vector<double
   // adding new points on gravity center to boost the mesh
   int IndexPoint1, IndexPoint2, IndexPoint3;
   IndexPoint1 = triangles[(IndexTriangle-1)*4];
-  IndexPoint2 = triangles[(IndexTriangle-1)*4+1];
-  IndexPoint3 = triangles[(IndexTriangle-1)*4+2];
+  IndexPoint2 = triangles[(IndexTriangle-1)*4 + 1];
+  IndexPoint3 = triangles[(IndexTriangle-1)*4 + 2];
   double x_G,y_G,x1,x2,x3,y1,y2,y3;
-  x1 = vertices[IndexPoint1*3];
-  y1 = vertices[IndexPoint1*3+1];
-  x2 = vertices[IndexPoint2*3];
-  y2 = vertices[IndexPoint2*3+1];
-  x3 = vertices[IndexPoint3*3];
-  y3 = vertices[IndexPoint3*3+1];
+  x1 = vertices[(IndexPoint1-1)*3];
+  y1 = vertices[(IndexPoint1-1)*3+1];
+  x2 = vertices[(IndexPoint2-1)*3];
+  y2 = vertices[(IndexPoint2-1)*3+1];
+  x3 = vertices[(IndexPoint3-1)*3];
+  y3 = vertices[(IndexPoint3-1)*3+1];
   x_G = (x1+x2+x3)/3;
   y_G = (y1+y2+y3)/3;
 
@@ -755,8 +755,70 @@ void AddPointsInMesh(int IndexTriangle, vector<double> &triangles, vector<double
 
 void AddPointsInAllTriangles(vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
 {
-  for (int i = 0; i< triangles.size()/4; i++)
+  int NbOfTrianglesDepart = triangles.size()/4;
+   for (int i = 0; i< NbOfTrianglesDepart; i++)
+  //for (int i = 0; i< 2; i++)
   {
     AddPointsInMesh(i+1, triangles, edges, vertices);
+  }
+}
+
+
+vector<double> getMaxEdgeLengthOfTriangles(vector<double> triangles, vector<double> edges, vector<double> vertices)
+{
+  vector<double> res;
+  for (int i = 0; i < triangles.size(); i+=4)
+  {
+    double max(0.);
+    double lengthEdge1, lengthEdge2, lengthEdge3;
+    vector<double> point1(2), point2(2), point3(2);
+    point1[0] = vertices[(triangles[i]-1)*3];
+    point1[1] = vertices[(triangles[i]-1)*3+1];
+    point2[0] = vertices[(triangles[i+1]-1)*3];
+    point2[1] = vertices[(triangles[i+1]-1)*3+1];
+    point3[0] = vertices[(triangles[i+2]-1)*3];
+    point3[1] = vertices[(triangles[i+2]-1)*3+1];
+    lengthEdge1 = distance(point1, point2);
+    lengthEdge2 = distance(point2, point3);
+    lengthEdge3 = distance(point3, point1);
+    if (lengthEdge1 >= max)
+    {
+      max = lengthEdge1;
+    }
+    if (lengthEdge2 >= max)
+    {
+      max = lengthEdge2;
+    }
+    if (lengthEdge3 >= max)
+    {
+      max = lengthEdge3;
+    }
+    res.push_back(max);
+  }
+  return res;
+}
+
+
+void AddPointsInBigTriangles(double minSize, vector<double> Sizes, vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
+{
+  int NbOfTrianglesDepart = triangles.size()/4;
+   for (int i = 0; i< NbOfTrianglesDepart; i++)
+  {
+    if (Sizes[i] > minSize)
+    {
+      AddPointsInMesh(i+1, triangles, edges, vertices);
+    }
+  }
+}
+
+double MaximumVector(vector<double> vector)
+{
+  double max(0.);
+  for (int i=0; i<vector.size(); i++)
+  {
+    if (vector[i] >= max)
+    {
+      max = vector[i];
+    }
   }
 }

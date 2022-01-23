@@ -62,3 +62,9 @@ void LabelizeBorderEdges(std::vector<double> &edges);
 void AddPointsInMesh(int IndexTriangle, std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
 
 void AddPointsInAllTriangles(std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
+
+std::vector<double> getMaxEdgeLengthOfTriangles(std::vector<double> triangles, std::vector<double> edges, std::vector<double> vertices);
+
+void AddPointsInBigTriangles(double minSize, std::vector<double> Sizes, std::vector<double> &triangles, std::vector<double> &edges, std::vector<double> &vertices);
+
+double MaximumVector(std::vector<double> vector);

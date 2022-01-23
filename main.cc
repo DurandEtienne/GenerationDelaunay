@@ -39,7 +39,7 @@ int main()
    int NbofPointsInitiaux = PointsInitiaux.size()/3; //On enlève les PointsInitiaux de la boîte englobante
    vector <double> point2(2);
    for (int i = 1; i < NbofPointsInitiaux; i++)
-  // for (int i = 1; i < 10; i++)
+   //for (int i = 1; i < 10; i++)
    {
      point2[0] = PointsInitiaux[i*3];
      point2[1] = PointsInitiaux[i*3+1];
@@ -51,6 +51,23 @@ int main()
   getBordersBack(Triangles, Aretes, Points);
   LabelizeBorderEdges(Aretes);
   AddPointsInAllTriangles(Triangles, Aretes, Points);
+  //AddPointsInAllTriangles(Triangles, Aretes, Points);
+
+
+  // Ajout de points sur des triangles trop gros avec un seuil
+  // vector<double> MaxSizeEdgeTriangles;
+  // MaxSizeEdgeTriangles = getMaxEdgeLengthOfTriangles(Triangles, Aretes, Points);
+  // double minSize = 0.1;
+  // AddPointsInBigTriangles(minSize, MaxSizeEdgeTriangles, Triangles, Aretes, Points);
+  // MaxSizeEdgeTriangles = getMaxEdgeLengthOfTriangles(Triangles, Aretes, Points);
+  // AddPointsInBigTriangles(minSize, MaxSizeEdgeTriangles, Triangles, Aretes, Points);
+
+  // while (MaximumVector(MaxSizeEdgeTriangles) > minSize)
+  // {
+  //   AddPointsInBigTriangles(minSize, MaxSizeEdgeTriangles, Triangles, Aretes, Points);
+  //   MaxSizeEdgeTriangles = getMaxEdgeLengthOfTriangles(Triangles, Aretes, Points);
+  //   cout << "test " << endl;
+  // }
 
 
   // écriture du maillage dans le fichier
