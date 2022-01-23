@@ -614,8 +614,8 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
     vector<vector<double>> edgesToDelete;
     int nbOfVerticesInside=vertices.size()/3-4;
     // From each box vertice we are going to delete triangles that have at least one non boundry edge
-    // the loop is stoped at triangles that doesn't contain any new non-boundry edge, which means that we are about to go inside 
-    // boundary edges are detected as edges with consecutive vertices index 
+    // the loop is stoped at triangles that doesn't contain any new non-boundry edge, which means that we are about to go inside
+    // boundary edges are detected as edges with consecutive vertices index
     // or with a diffrence equal to the number of vertices inside -1 (end of cycle)
     for (int i = 1; i < 5; i++)
     {
@@ -634,7 +634,7 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                     continue;
                 }
                 trianglesToDelete.push_back(j / 4 + 1);
-                // identifiying  the third edge and checking if it's a boundry edge 
+                // identifiying  the third edge and checking if it's a boundry edge
                 int n = 0, m = 0;
                 for (int k = 0; k < 3; k++)
                 {
@@ -664,7 +664,7 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
                         int nbofTrianglesFound = 0;
                         for (int p = 0; p < triangles.size(); p += 4)
                         {
-                            // collecting non-boundary edges and triangle that we should delete 
+                            // collecting non-boundary edges and triangle that we should delete
                             if (edgeAlreadyHere(edgesToDelete, {triangles[p], triangles[p + 1], 1}) || edgeAlreadyHere(edgesToDelete, {triangles[p], triangles[p + 2], 1}) || edgeAlreadyHere(edgesToDelete, {triangles[p + 2], triangles[p + 1], 1}))
                             {
                                 if (!alreadyDeleted(trianglesToDelete, p / 4 + 1))
@@ -756,10 +756,37 @@ void AddPointsInMesh(int IndexTriangle, vector<double> &triangles, vector<double
 void AddPointsInAllTriangles(vector<double> &triangles, vector<double> &edges, vector<double> &vertices)
 {
   int NbOfTrianglesDepart = triangles.size()/4;
-   for (int i = 0; i< NbOfTrianglesDepart; i++)
-  //for (int i = 0; i< 2; i++)
+  vector<double> GravityCenter;
+
+  //Construction de la liste des points à ajouter
+  for (int i = 0; i< NbOfTrianglesDepart; i++)
   {
-    AddPointsInMesh(i+1, triangles, edges, vertices);
+    int IndexTriangle;
+    IndexTriangle = i+1;
+    int IndexPoint1, IndexPoint2, IndexPoint3;
+    IndexPoint1 = triangles[(IndexTriangle-1)*4];
+    IndexPoint2 = triangles[(IndexTriangle-1)*4 + 1];
+    IndexPoint3 = triangles[(IndexTriangle-1)*4 + 2];
+    double x_G,y_G,x1,x2,x3,y1,y2,y3;
+    x1 = vertices[(IndexPoint1-1)*3];
+    y1 = vertices[(IndexPoint1-1)*3+1];
+    x2 = vertices[(IndexPoint2-1)*3];
+    y2 = vertices[(IndexPoint2-1)*3+1];
+    x3 = vertices[(IndexPoint3-1)*3];
+    y3 = vertices[(IndexPoint3-1)*3+1];
+    x_G = (x1+x2+x3)/3;
+    y_G = (y1+y2+y3)/3;
+    GravityCenter.push_back(x_G);
+    GravityCenter.push_back(y_G);
+  }
+
+  //Ajout de ces points
+  for (int i = 0; i< NbOfTrianglesDepart; i++)
+  {
+    vector<double> pointToAdd(2);
+    pointToAdd[0] = GravityCenter[i*2];
+    pointToAdd[1] = GravityCenter[i*2 + 1];
+    deleteEdgesOnCavityAndReconnect(pointToAdd, triangles, edges, vertices);
   }
 }
 

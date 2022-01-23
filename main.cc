@@ -46,12 +46,13 @@ int main()
      deleteEdgesOnCavityAndReconnect(point2, Triangles, Aretes, Points);
    }
 
+
   //Suppression de la boîte englobante
   //deleteBoiteEnglobante(Triangles, Aretes, Points, PointsInitiaux);
-  // getBordersBack(Triangles, Aretes, Points);
-  // LabelizeBorderEdges(Aretes);
-  // AddPointsInAllTriangles(Triangles, Aretes, Points);
-  //AddPointsInAllTriangles(Triangles, Aretes, Points);
+   getBordersBack(Triangles, Aretes, Points);
+   LabelizeBorderEdges(Aretes);
+   AddPointsInAllTriangles(Triangles, Aretes, Points);
+   //AddPointsInAllTriangles(Triangles, Aretes, Points);
 
 
   // Ajout de points sur des triangles trop gros avec un seuil
