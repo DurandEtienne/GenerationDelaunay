@@ -612,7 +612,7 @@ void getBordersBack(vector<double> &triangles, vector<double> &edges, vector<dou
 {
     vector<int> trianglesToDelete;
     vector<vector<double>> edgesToDelete;
-    int nbOfVerticesInside=vertices.size()-4;
+    int nbOfVerticesInside=vertices.size()/3-4;
     // From each box vertice we are going to delete triangles that have at least one non boundry edge
     // the loop is stoped at triangles that doesn't contain any new non-boundry edge, which means that we are about to go inside 
     // boundary edges are detected as edges with consecutive vertices index 
